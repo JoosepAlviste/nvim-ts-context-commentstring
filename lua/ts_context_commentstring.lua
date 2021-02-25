@@ -8,6 +8,7 @@ M.config = {
   typescriptreact = {
     jsx_element = '{/* %s */}',
     jsx_attribute = '// %s',
+    jsx_fragment = '{/* %s */}',
     comment = '// %s',
   },
   vue = {
