@@ -22,7 +22,9 @@ M.config = {
 --
 -- Add an autocmd for each filetype in the config which will initialize the 
 -- plugin in that filetype.
-function M.setup()
+function M.setup(config)
+  M.config = vim.tbl_deep_extend('force', M.config, config or {})
+
   local file_types = vim.tbl_keys(M.config)
 
   local autocmds = vim.tbl_map(function (file_type)

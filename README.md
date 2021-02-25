@@ -38,6 +38,44 @@ EOF
 ```
 
 
+## Configuration
+
+### Adding support for more filetypes
+
+The plugin includes configurations for a few different filetypes (see 
+[`lua/ts_context_commentstring.lua`](./lua/ts_context_commentstring.lua)). If 
+you'd like to add more or override any, pass a configuration object to the 
+`setup` function:
+
+```vim
+lua <<EOF
+require('ts_context_commentstring').setup{
+  vue = {
+    style_element = '// %s',
+  },
+}
+EOF
+```
+
+The `style_element` refers to the type of the treesitter node. In this example, 
+if your cursor is inside a `style_element`, the `// %s` commentstring will be 
+set.
+
+### Behavior
+
+The default behavior is to trigger `commentstring` updating on `CursorHold`. If 
+your `updatetime` setting is set to a high value, then the updating might not 
+be triggered. Let me know if you'd like to have this be customized by creating 
+an issue. Another candidate might be the `CursorMoved` autocommand.
+
+You could also not call the `.setup()` function, but instead manually call 
+`update_commentstring()`:
+
+```lua
+nnoremap <leader>c <cmd>lua require('ts_context_commentstring').update_commentstring()<cr>
+```
+
+
 ## More demos
 
 **React:**
