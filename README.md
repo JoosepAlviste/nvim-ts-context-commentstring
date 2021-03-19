@@ -41,15 +41,15 @@ require'nvim-treesitter.configs'.setup {
 
 Don't forget to use [lua
 heredoc](https://github.com/nanotee/nvim-lua-guide#using-lua-from-vimscript) if
-you're using init.vim
+you're using `init.vim`
 
 ## Configuration
 
-### Adding support for more filetypes
+### Adding support for more languages
 
-The plugin includes configurations for a few different filetypes (see
-[`lua/ts_context_commentstring.lua`](./lua/ts_context_commentstring/internal.lua)). If
-you'd like to add more or override any, pass a `config` table.
+The plugin includes configurations for a few different languages (see
+[`lua/ts_context_commentstring/internal.lua`](./lua/ts_context_commentstring/internal.lua)). 
+If you'd like to add more or override any, pass a `config` table.
 
 ```lua
 require'nvim-treesitter.configs'.setup {
@@ -67,6 +67,9 @@ require'nvim-treesitter.configs'.setup {
 The `style_element` refers to the type of the treesitter node. In this example,
 if your cursor is inside a `style_element`, the `// %s` commentstring will be
 set.
+
+Note that the language (`vue` in the example) refers to the **treesitter** 
+language, not filetype or file extension.
 
 ### Behavior
 
