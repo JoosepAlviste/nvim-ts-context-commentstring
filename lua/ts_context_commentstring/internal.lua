@@ -20,31 +20,13 @@ M.config = {
   svelte = {
     script_element = '// %s',
     style_element = '/* %s */',
+    element = '<!-- %s -->',
     comment = '<!-- %s -->',
   },
 }
 
--- Bootstrap the plugin
---
--- Add an autocmd for each filetype in the config which will initialize the
--- plugin in that filetype.
-function M.setup()
-  M.config = vim.tbl_deep_extend(
-    'force', M.config,
-    configs.get_module('context_commentstring').config or {}
-  )
-
-  local file_types = vim.tbl_keys(M.config)
-
-  local autocmds = vim.tbl_map(function (file_type)
-    return {'FileType', file_type, [[lua require('ts_context_commentstring.internal').setup_filetype()]]}
-  end, file_types)
-
-  utils.create_augroups({context_commentstring = autocmds})
-end
-
 -- Initialize the plugin in the current buffer
-function M.setup_filetype()
+function M.setup_buffer()
   -- Save the original commentstring so that it can be restored later if there
   -- is no match
   api.nvim_buf_set_var(0, 'ts_original_commentstring', api.nvim_buf_get_option(0, 'commentstring'))
@@ -86,8 +68,14 @@ function M.check_node(node, looking_for)
   return M.check_node(node:parent(), looking_for)
 end
 
+-- Attach the module to the current buffer
 function M.attach()
-  return M.setup()
+  M.config = vim.tbl_deep_extend(
+    'force', M.config,
+    configs.get_module('context_commentstring').config or {}
+  )
+
+  return M.setup_buffer()
 end
 
 function M.detach() return end
