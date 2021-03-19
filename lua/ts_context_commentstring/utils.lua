@@ -18,8 +18,8 @@ function M.create_augroups(definitions)
   end
 end
 
--- This function is pretty much `get_node_at_cursor()` copied from 
--- `nvim-treesitter`, but instead will return the node that starts at the first 
+-- This function is pretty much `get_node_at_cursor()` copied from
+-- `nvim-treesitter`, but instead will return the node that starts at the first
 -- non-whitespace column on the cursor's line.
 --
 -- For example, if the cursor is at "|":
