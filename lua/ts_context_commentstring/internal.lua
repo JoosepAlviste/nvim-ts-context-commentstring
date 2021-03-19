@@ -2,11 +2,14 @@ local api = vim.api
 
 local utils = require('ts_context_commentstring.utils')
 local configs = require('nvim-treesitter.configs')
+local parsers = require('nvim-treesitter.parsers')
 
 local M = {}
 
+-- The configuration object keys should be **treesitter** languages, NOT 
+-- filetypes or file extensions.
 M.config = {
-  typescriptreact = {
+  tsx = {
     jsx_element = '{/* %s */}',
     jsx_attribute = '// %s',
     jsx_fragment = '{/* %s */}',
@@ -41,7 +44,7 @@ end
 -- Update the commentstring based on the current location of the cursor
 function M.update_commentstring()
   local node = utils.get_node_at_cursor_start_of_line()
-  local looking_for = M.config[vim.bo.ft]
+  local looking_for = M.config[parsers.get_buf_lang(0)]
 
   if looking_for then
     local found_type = M.check_node(node, looking_for)
