@@ -91,3 +91,7 @@ nnoremap <leader>c <cmd>lua require('ts_context_commentstring.internal').update_
 **React:**
 
 ![React demo gif](demo/react.gif)
+
+**Svelte:**
+
+![Svelte demo gif](demo/svelte.gif)
