@@ -8,11 +8,19 @@ local M = {}
 
 -- The configuration object keys should be **treesitter** languages, NOT 
 -- filetypes or file extensions.
+-- You can get the treesitter language by running this command:
+-- `:lua print(require'nvim-treesitter.parsers'.get_buf_lang(0))`
 M.config = {
   tsx = {
     jsx_element = '{/* %s */}',
-    jsx_attribute = '// %s',
     jsx_fragment = '{/* %s */}',
+    jsx_attribute = '// %s',
+    comment = '// %s',
+  },
+  javascript = {
+    jsx_element = '{/* %s */}',
+    jsx_fragment = '{/* %s */}',
+    jsx_attribute = '// %s',
     comment = '// %s',
   },
   vue = {
