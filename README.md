@@ -7,6 +7,11 @@ This is useful when there are embedded languages in certain types of files. For
 example, Vue files can have many different sections, each of which can have a
 different style for comments.
 
+Note that this plugin *only* changes the `commentstring` setting. It does not 
+add any mappings for commenting. It is recommended to use a commenting plugin 
+like [`vim-commentary`](https://github.com/tpope/vim-commentary/) alongside this 
+plugin.
+
 ![Demo gif](demo/demo.gif)
 
 
@@ -43,6 +48,16 @@ Don't forget to use [lua
 heredoc](https://github.com/nanotee/nvim-lua-guide#using-lua-from-vimscript) if
 you're using `init.vim`
 
+**Recommended: Using a commenting plugin**
+
+It is recommended to use a commenting plugin like 
+[`vim-commentary`](https://github.com/tpope/vim-commentary/) together with this 
+plugin. `vim-commentary` provides the mappings for commenting which use the 
+`commentstring` setting. This plugin adds to that by correctly setting the 
+`commentstring` setting so that `vim-commentary` can do its thing even in more 
+complex filetypes.
+
+
 ## Configuration
 
 ### Adding support for more languages
@@ -65,7 +80,7 @@ require'nvim-treesitter.configs'.setup {
 ```
 
 The `style_element` refers to the type of the treesitter node. In this example,
-if your cursor is inside a `style_element`, the `// %s` commentstring will be
+if your cursor is inside a `style_element`, the `// %s` `commentstring` will be
 set.
 
 Note that the language (`vue` in the example) refers to the **treesitter** 
