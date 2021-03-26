@@ -62,8 +62,15 @@ complex filetypes.
 
 ### Adding support for more languages
 
-The plugin includes configurations for a few different languages (see
-[`lua/ts_context_commentstring/internal.lua`](./lua/ts_context_commentstring/internal.lua)). 
+Currently, the following languages are supported (see 
+[`lua/ts_context_commentstring/internal.lua`](./lua/ts_context_commentstring/internal.lua)):
+
+- `html`
+- `javascript` (React in JS)
+- `tsx` (React in TypeScript)
+- `vue`
+- `svelte`
+
 If you'd like to add more or override any, pass a `config` table.
 
 ```lua
