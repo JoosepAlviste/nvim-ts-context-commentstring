@@ -34,6 +34,10 @@ M.config = {
     element = '<!-- %s -->',
     comment = '<!-- %s -->',
   },
+  html = {
+    style_element = '/* %s */',
+    script_element = '// %s',
+  },
 }
 
 -- Initialize the plugin in the current buffer

@@ -95,3 +95,7 @@ nnoremap <leader>c <cmd>lua require('ts_context_commentstring.internal').update_
 **Svelte:**
 
 ![Svelte demo gif](demo/svelte.gif)
+
+**HTML:**
+
+![HTML demo gif](demo/html.gif)
