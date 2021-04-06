@@ -49,6 +49,12 @@ function M.setup_buffer()
   local enable_autocmd = configs.get_module('context_commentstring').enable_autocmd
   enable_autocmd = enable_autocmd == nil and true or enable_autocmd
 
+  -- If vim-commentary is installed, set up mappings for it
+  if vim.g.loaded_commentary == 1 then
+    enable_autocmd = false
+    require('ts_context_commentstring.integrations.vim_commentary').set_up_maps()
+  end
+
   if enable_autocmd then
     utils.create_augroups({
       context_commentstring_ft = {
@@ -99,5 +105,17 @@ function M.attach()
 end
 
 function M.detach() return end
+
+_G.context_commentstring = {}
+
+-- Trigger re-calculation of the `commentstring` and trigger the given <Plug> 
+-- mapping right after that.
+--
+-- This is in the global scope because 
+-- `v:lua.require('ts_context_commentstring')` does not work for some reason.
+function _G.context_commentstring.update_commentstring_and_run(mapping)
+  M.update_commentstring()
+  return vim.api.nvim_replace_termcodes('<Plug>' .. mapping, true, true, true)
+end
 
 return M

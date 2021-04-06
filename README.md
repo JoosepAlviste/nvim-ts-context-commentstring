@@ -57,6 +57,14 @@ plugin. `vim-commentary` provides the mappings for commenting which use the
 `commentstring` setting so that `vim-commentary` can do its thing even in more 
 complex filetypes.
 
+There is an additional integration with `vim-commentary` specifically, which 
+optimizes the `commentstring` updating logic so that it is not run 
+unnecessarily. If `vim-commentary` is detected, then this plugin automatically 
+sets up `vim-commentary` mappings to first update the `commentstring`, and then 
+trigger `vim-commentary`.
+
+Let me know if you'd like a similar integration for another commenting plugin.
+
 
 ## Configuration
 
@@ -118,21 +126,8 @@ Then, you can call the `update_commentstring` function manually:
 nnoremap <leader>c <cmd>lua require('ts_context_commentstring.internal').update_commentstring()<cr>
 ```
 
-For example, here's how it can be called whenever `vim-commentary` commenting 
-mappings are used (in Lua):
-
-```lua
-function _G.calculate_commentstring_and_run(mapping)
-  require('ts_context_commentstring.internal').update_commentstring()
-  return vim.api.nvim_replace_termcodes('<Plug>' .. mapping, true, true, true)
-end
-
-vim.api.nvim_set_keymap('n', 'gc', [[v:lua.calculate_commentstring_and_run('Commentary')]], {expr = true})
-vim.api.nvim_set_keymap('x', 'gc', [[v:lua.calculate_commentstring_and_run('Commentary')]], {expr = true})
-vim.api.nvim_set_keymap('o', 'gc', [[v:lua.calculate_commentstring_and_run('Commentary')]], {expr = true})
-vim.api.nvim_set_keymap('n', 'gcc', [[v:lua.calculate_commentstring_and_run('CommentaryLine')]], {expr = true})
-vim.api.nvim_set_keymap('n', 'cgc', [[v:lua.calculate_commentstring_and_run('ChangeCommentary')]], {expr = true})
-```
+**Note:** It is not necessary to use this option if you are using 
+`vim-commentary`, the integration is set up automatically.
 
 
 ## More demos
