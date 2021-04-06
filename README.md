@@ -100,11 +100,38 @@ your `updatetime` setting is set to a high value, then the updating might not
 be triggered. Let me know if you'd like to have this be customized by creating
 an issue. Another candidate might be the `CursorMoved` autocommand.
 
-You could also not call the `.setup()` function, but instead manually call
-`update_commentstring()`:
+The default `CursorHold` autocommand can be disabled by passing `enable_autocmd 
+= false` when setting up the plugin:
+
+```lua
+require'nvim-treesitter.configs'.setup {
+  context_commentstring = {
+    enable = true,
+    enable_autocmd = false,
+  }
+}
+```
+
+Then, you can call the `update_commentstring` function manually:
 
 ```lua
 nnoremap <leader>c <cmd>lua require('ts_context_commentstring.internal').update_commentstring()<cr>
+```
+
+For example, here's how it can be called whenever `vim-commentary` commenting 
+mappings are used (in Lua):
+
+```lua
+function _G.calculate_commentstring_and_run(mapping)
+  require('ts_context_commentstring.internal').update_commentstring()
+  return vim.api.nvim_replace_termcodes('<Plug>' .. mapping, true, true, true)
+end
+
+vim.api.nvim_set_keymap('n', 'gc', [[v:lua.calculate_commentstring_and_run('Commentary')]], {expr = true})
+vim.api.nvim_set_keymap('x', 'gc', [[v:lua.calculate_commentstring_and_run('Commentary')]], {expr = true})
+vim.api.nvim_set_keymap('o', 'gc', [[v:lua.calculate_commentstring_and_run('Commentary')]], {expr = true})
+vim.api.nvim_set_keymap('n', 'gcc', [[v:lua.calculate_commentstring_and_run('CommentaryLine')]], {expr = true})
+vim.api.nvim_set_keymap('n', 'cgc', [[v:lua.calculate_commentstring_and_run('ChangeCommentary')]], {expr = true})
 ```
 
 

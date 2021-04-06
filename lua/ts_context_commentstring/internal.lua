@@ -46,11 +46,16 @@ function M.setup_buffer()
   -- is no match
   api.nvim_buf_set_var(0, 'ts_original_commentstring', api.nvim_buf_get_option(0, 'commentstring'))
 
-  utils.create_augroups({
-    context_commentstring_ft = {
-      {'CursorHold', '<buffer>', [[lua require('ts_context_commentstring.internal').update_commentstring()]]},
-    },
-  })
+  local enable_autocmd = configs.get_module('context_commentstring').enable_autocmd
+  enable_autocmd = enable_autocmd == nil and true or enable_autocmd
+
+  if enable_autocmd then
+    utils.create_augroups({
+      context_commentstring_ft = {
+        {'CursorHold', '<buffer>', [[lua require('ts_context_commentstring.internal').update_commentstring()]]},
+      },
+    })
+  end
 end
 
 -- Update the commentstring based on the current location of the cursor
