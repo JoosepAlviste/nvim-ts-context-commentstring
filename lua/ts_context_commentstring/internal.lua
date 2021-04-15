@@ -2,41 +2,41 @@ local api = vim.api
 
 local utils = require('ts_context_commentstring.utils')
 local configs = require('nvim-treesitter.configs')
-local parsers = require('nvim-treesitter.parsers')
 
 local M = {}
 
 -- The configuration object keys should be **treesitter** languages, NOT 
 -- filetypes or file extensions.
--- You can get the treesitter language by running this command:
+--
+-- You can get the treesitter language for the current file by running this 
+-- command:
 -- `:lua print(require'nvim-treesitter.parsers'.get_buf_lang(0))`
+--
+-- Or the injected language for a specific location:
+-- `:lua print(require'nvim-treesitter.parsers'.get_parser():language_for_range({ line, col, line, col }):lang())`
 M.config = {
+  -- Languages that have a single comment style
+  typescript = '// %s',
+  css = '/* %s */',
+  scss = '/* %s */',
+  php = '// %s',
+  html = '<!-- %s -->',
+  svelte = '<!-- %s -->',
+
+  -- Languages that can have multiple types of comments
   tsx = {
+    __default = '// %s',
     jsx_element = '{/* %s */}',
     jsx_fragment = '{/* %s */}',
     jsx_attribute = '// %s',
     comment = '// %s',
   },
   javascript = {
+    __default = '// %s',
     jsx_element = '{/* %s */}',
     jsx_fragment = '{/* %s */}',
     jsx_attribute = '// %s',
     comment = '// %s',
-  },
-  vue = {
-    script_element = '// %s',
-    template_element = '<!-- %s -->',
-    style_element = '/* %s */',
-  },
-  svelte = {
-    script_element = '// %s',
-    style_element = '/* %s */',
-    element = '<!-- %s -->',
-    comment = '<!-- %s -->',
-  },
-  html = {
-    style_element = '/* %s */',
-    script_element = '// %s',
   },
 }
 
@@ -66,32 +66,41 @@ end
 
 -- Update the commentstring based on the current location of the cursor
 function M.update_commentstring()
-  local node = utils.get_node_at_cursor_start_of_line()
-  local looking_for = M.config[parsers.get_buf_lang(0)]
+  local node, language_tree = utils.get_node_at_cursor_start_of_line(
+    vim.tbl_keys(M.config)
+  )
+  local language = language_tree:lang()
+  local language_config = M.config[language]
 
-  if looking_for then
-    local found_type = M.check_node(node, looking_for)
+  local found_commentstring = M.check_node(node, language_config)
 
-    if found_type then
-      api.nvim_buf_set_option(0, 'commentstring', looking_for[found_type])
-    else
-      api.nvim_buf_set_option(0, 'commentstring', api.nvim_buf_get_var(0, 'ts_original_commentstring'))
-    end
+  if found_commentstring then
+    api.nvim_buf_set_option(0, 'commentstring', found_commentstring)
+  else
+    api.nvim_buf_set_option(0, 'commentstring', api.nvim_buf_get_var(0, 'ts_original_commentstring'))
   end
 end
 
 -- Check if the given node matches any of the given types. If not, recursively
 -- check its parent node.
-function M.check_node(node, looking_for)
-  if not node then return nil end
+function M.check_node(node, language_config)
+  -- There is no commentstring configuration for this language, use the 
+  -- `ts_original_commentstring`
+  if not language_config then return nil end
+
+  -- There is no node, we have reached the top-most node, use the default 
+  -- commentstring from language config
+  if not node then
+    return language_config.__default or language_config
+  end
 
   local type = node:type()
-  local match = looking_for[type]
+  local match = language_config[type]
 
-  if match then return type end
+  if match then return match end
 
   -- Recursively check the parent node
-  return M.check_node(node:parent(), looking_for)
+  return M.check_node(node:parent(), language_config)
 end
 
 -- Attach the module to the current buffer
