@@ -90,6 +90,9 @@ function M.get_node_at_cursor_start_of_line(only_languages, winnr)
     return tree_contains(tree, range)
   end, language_tree:trees())[1]
 
+  -- avoid crash on empty files
+  if not tree then return nil, language_tree end
+
   -- Get the actual node on the location
   local injected_root = tree:root()
   local node = injected_root:named_descendant_for_range(unpack(range))
