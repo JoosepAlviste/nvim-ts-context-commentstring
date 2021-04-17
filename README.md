@@ -180,3 +180,11 @@ nnoremap <leader>c <cmd>lua require('ts_context_commentstring.internal').update_
 **HTML:**
 
 ![HTML demo gif](demo/html.gif)
+
+**Nesting:**
+
+I injected HTML into JavaScript strings and created multiple levels of nesting 
+with language tree. This sort of nesting of languages works without any extra 
+configuration in the plugin.
+
+![Nesting demo gif](demo/nested.gif)
