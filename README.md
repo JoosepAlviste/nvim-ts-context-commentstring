@@ -57,13 +57,8 @@ plugin. `vim-commentary` provides the mappings for commenting which use the
 `commentstring` setting so that `vim-commentary` can do its thing even in more 
 complex filetypes.
 
-There is an additional integration with `vim-commentary` specifically, which 
-optimizes the `commentstring` updating logic so that it is not run 
-unnecessarily. If `vim-commentary` is detected, then this plugin automatically 
-sets up `vim-commentary` mappings to first update the `commentstring`, and then 
-trigger `vim-commentary`.
-
-Let me know if you'd like a similar integration for another commenting plugin.
+There are ways to make this plugin more efficient with some commenting plugins. 
+See the [Integrations](#integrations) section for more information.
 
 
 ## Configuration
@@ -165,6 +160,53 @@ nnoremap <leader>c <cmd>lua require('ts_context_commentstring.internal').update_
 
 **Note:** It is not necessary to use this option if you are using 
 `vim-commentary`, the integration is set up automatically.
+
+
+### Integrations
+
+For some commenting plugins, it's possible to trigger the `commentstring` 
+calculation only when it is actually needed. Some commenting plugins require 
+more configuration than others.
+
+Let me know if you'd like to see more integrations for other commenting plugins. 
+A PR is always appreciated :)
+
+
+#### [`vim-commentary`](https://github.com/tpope/vim-commentary/)
+
+There is an existing integration with `vim-commentary`, which triggers the 
+`commentstring` updating logic only when needed (before commenting with `gc`). 
+If `vim-commentary` is detected, then this plugin automatically sets up 
+`vim-commentary` mappings to first update the `commentstring`, and then trigger 
+`vim-commentary`.
+
+
+#### [`kommentary`](https://github.com/b3nj5m1n/kommentary)
+
+`kommentary` can also trigger the `commentstring` updating logic before 
+commenting. However, it requires some configuration to set up.
+
+First, disable the `CursorHold` autocommand of this plugin:
+
+```lua
+require'nvim-treesitter.configs'.setup {
+  context_commentstring = {
+    enable = true,
+    enable_autocmd = false,
+  }
+}
+```
+
+Then, configure `kommentary` to trigger the `commentstring` updating logic with 
+its `hook_function` configuration:
+
+```lua
+require('kommentary.config').configure_language('typescriptreact', {
+  hook_function = function()
+    require('ts_context_commentstring.internal').update_commentstring()
+  end,
+})
+```
 
 
 ## More demos
