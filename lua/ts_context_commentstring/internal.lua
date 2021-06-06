@@ -64,20 +64,44 @@ function M.setup_buffer()
   end
 end
 
--- Update the commentstring based on the current location of the cursor
-function M.update_commentstring()
+-- Calculate the commentstring based on the current location of the cursor.
+--
+-- **Note:** We should treat this function like a public API, try not to break 
+-- it!
+--
+-- @returns the commentstring or nil if not found
+function M.calculate_commentstring()
   local node, language_tree = utils.get_node_at_cursor_start_of_line(
     vim.tbl_keys(M.config)
   )
+
+  if not node and not language_tree then
+    return nil
+  end
+
   local language = language_tree:lang()
   local language_config = M.config[language]
 
-  local found_commentstring = M.check_node(node, language_config)
+  return M.check_node(node, language_config)
+end
+
+-- Update the `commentstring` setting based on the current location of the 
+-- cursor. If no `commentstring` can be calculated, will revert to the ofiginal 
+-- `commentstring` for the current file.
+--
+-- **Note:** We should treat this function like a public API, try not to break 
+-- it!
+function M.update_commentstring()
+  local found_commentstring = M.calculate_commentstring()
 
   if found_commentstring then
     api.nvim_buf_set_option(0, 'commentstring', found_commentstring)
   else
-    api.nvim_buf_set_option(0, 'commentstring', api.nvim_buf_get_var(0, 'ts_original_commentstring'))
+    -- No commentstring was found, default to the
+    local original_commentstring = vim.b.ts_original_commentstring
+    if original_commentstring then
+      api.nvim_buf_set_option(0, 'commentstring', vim.b.ts_original_commentstring)
+    end
   end
 end
 
