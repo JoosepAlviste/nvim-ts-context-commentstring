@@ -22,6 +22,7 @@ M.config = {
   php = '// %s',
   html = '<!-- %s -->',
   svelte = '<!-- %s -->',
+  vue = '<!-- %s -->',
 
   -- Languages that can have multiple types of comments
   tsx = {
