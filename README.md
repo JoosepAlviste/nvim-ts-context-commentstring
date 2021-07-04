@@ -19,8 +19,7 @@ plugin.
 
 **Requirements:**
 
-- [Neovim nightly (version 0.5
-  prerelease)](https://github.com/neovim/neovim/releases/tag/nightly)
+- [Neovim version 0.5](https://github.com/neovim/neovim/releases/tag/v0.5.0)
 - [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter/)
 
 **Installation:**
