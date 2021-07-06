@@ -77,6 +77,9 @@ language tree (see
 - `html`
 - `svelte`
 - `vue`
+- `handlebars`
+- `glimmer`
+- `graphql`
 
 This means that in any filetype, if the given languages are injected, this 
 plugin should detect them and correctly set the `commentstring`. For example, 
