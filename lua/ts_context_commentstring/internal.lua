@@ -23,6 +23,9 @@ M.config = {
   html = '<!-- %s -->',
   svelte = '<!-- %s -->',
   vue = '<!-- %s -->',
+  handlebars = '{{! %s }}',
+  glimmer = '{{! %s }}',
+  graphql = '# %s',
 
   -- Languages that can have multiple types of comments
   tsx = {
