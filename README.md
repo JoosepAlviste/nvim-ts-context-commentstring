@@ -80,6 +80,7 @@ language tree (see
 - `handlebars`
 - `glimmer`
 - `graphql`
+- `lua`
 
 This means that in any filetype, if the given languages are injected, this 
 plugin should detect them and correctly set the `commentstring`. For example, 
