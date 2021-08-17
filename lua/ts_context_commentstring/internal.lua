@@ -26,6 +26,7 @@ M.config = {
   handlebars = '{{! %s }}',
   glimmer = '{{! %s }}',
   graphql = '# %s',
+  lua = '-- %s',
 
   -- Languages that can have multiple types of comments
   tsx = {
