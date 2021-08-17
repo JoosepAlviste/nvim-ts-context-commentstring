@@ -213,6 +213,32 @@ require('kommentary.config').configure_language('typescriptreact', {
 })
 ```
 
+#### [`nvim-comment`](https://github.com/terrortylor/nvim-comment)
+
+`nvim-comment` can easily be configured to trigger the `commentstring` updating
+logic before commenting.
+
+First, disable the `CursorHold` autocommand of this plugin:
+
+```lua
+require'nvim-treesitter.configs'.setup {
+  context_commentstring = {
+    enable = true,
+    enable_autocmd = false,
+  }
+}
+```
+
+Then, configure `nvim_comment` to trigger the `commentstring` updating logic with 
+its `hook` configuration:
+
+```lua
+require("nvim_comment").setup({
+  hook = function()
+    require("ts_context_commentstring.internal").update_commentstring()
+  end,
+})
+```
 
 ## More demos
 
