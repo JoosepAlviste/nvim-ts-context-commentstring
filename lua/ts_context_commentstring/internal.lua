@@ -35,6 +35,8 @@ M.config = {
     jsx_fragment = '{/* %s */}',
     jsx_attribute = '// %s',
     comment = '// %s',
+    call_expression = '// %s',
+    statement_block = '// %s',
   },
   javascript = {
     __default = '// %s',
@@ -42,6 +44,8 @@ M.config = {
     jsx_fragment = '{/* %s */}',
     jsx_attribute = '// %s',
     comment = '// %s',
+    call_expression = '// %s',
+    statement_block = '// %s',
   },
 }
 
