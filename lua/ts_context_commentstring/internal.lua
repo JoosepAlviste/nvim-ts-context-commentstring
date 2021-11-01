@@ -1,14 +1,14 @@
 local api = vim.api
 
-local utils = require('ts_context_commentstring.utils')
-local configs = require('nvim-treesitter.configs')
+local utils = require 'ts_context_commentstring.utils'
+local configs = require 'nvim-treesitter.configs'
 
 local M = {}
 
--- The configuration object keys should be **treesitter** languages, NOT 
+-- The configuration object keys should be **treesitter** languages, NOT
 -- filetypes or file extensions.
 --
--- You can get the treesitter language for the current file by running this 
+-- You can get the treesitter language for the current file by running this
 -- command:
 -- `:lua print(require'nvim-treesitter.parsers'.get_buf_lang(0))`
 --
@@ -65,24 +65,22 @@ function M.setup_buffer()
   end
 
   if enable_autocmd then
-    utils.create_augroups({
+    utils.create_augroups {
       context_commentstring_ft = {
-        {'CursorHold', '<buffer>', [[lua require('ts_context_commentstring.internal').update_commentstring()]]},
+        { 'CursorHold', '<buffer>', [[lua require('ts_context_commentstring.internal').update_commentstring()]] },
       },
-    })
+    }
   end
 end
 
 -- Calculate the commentstring based on the current location of the cursor.
 --
--- **Note:** We should treat this function like a public API, try not to break 
+-- **Note:** We should treat this function like a public API, try not to break
 -- it!
 --
 -- @returns the commentstring or nil if not found
 function M.calculate_commentstring()
-  local node, language_tree = utils.get_node_at_cursor_start_of_line(
-    vim.tbl_keys(M.config)
-  )
+  local node, language_tree = utils.get_node_at_cursor_start_of_line(vim.tbl_keys(M.config))
 
   if not node and not language_tree then
     return nil
@@ -94,11 +92,11 @@ function M.calculate_commentstring()
   return M.check_node(node, language_config)
 end
 
--- Update the `commentstring` setting based on the current location of the 
--- cursor. If no `commentstring` can be calculated, will revert to the ofiginal 
+-- Update the `commentstring` setting based on the current location of the
+-- cursor. If no `commentstring` can be calculated, will revert to the ofiginal
 -- `commentstring` for the current file.
 --
--- **Note:** We should treat this function like a public API, try not to break 
+-- **Note:** We should treat this function like a public API, try not to break
 -- it!
 function M.update_commentstring()
   local found_commentstring = M.calculate_commentstring()
@@ -117,11 +115,13 @@ end
 -- Check if the given node matches any of the given types. If not, recursively
 -- check its parent node.
 function M.check_node(node, language_config)
-  -- There is no commentstring configuration for this language, use the 
+  -- There is no commentstring configuration for this language, use the
   -- `ts_original_commentstring`
-  if not language_config then return nil end
+  if not language_config then
+    return nil
+  end
 
-  -- There is no node, we have reached the top-most node, use the default 
+  -- There is no node, we have reached the top-most node, use the default
   -- commentstring from language config
   if not node then
     return language_config.__default or language_config
@@ -130,7 +130,9 @@ function M.check_node(node, language_config)
   local type = node:type()
   local match = language_config[type]
 
-  if match then return match end
+  if match then
+    return match
+  end
 
   -- Recursively check the parent node
   return M.check_node(node:parent(), language_config)
@@ -138,22 +140,21 @@ end
 
 -- Attach the module to the current buffer
 function M.attach()
-  M.config = vim.tbl_deep_extend(
-    'force', M.config,
-    configs.get_module('context_commentstring').config or {}
-  )
+  M.config = vim.tbl_deep_extend('force', M.config, configs.get_module('context_commentstring').config or {})
 
   return M.setup_buffer()
 end
 
-function M.detach() return end
+function M.detach()
+  return
+end
 
 _G.context_commentstring = {}
 
--- Trigger re-calculation of the `commentstring` and trigger the given <Plug> 
+-- Trigger re-calculation of the `commentstring` and trigger the given <Plug>
 -- mapping right after that.
 --
--- This is in the global scope because 
+-- This is in the global scope because
 -- `v:lua.require('ts_context_commentstring')` does not work for some reason.
 function _G.context_commentstring.update_commentstring_and_run(mapping)
   M.update_commentstring()

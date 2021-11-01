@@ -2,28 +2,28 @@ local api = vim.api
 local cmd = vim.cmd
 local fn = vim.fn
 
-local parsers = require('nvim-treesitter.parsers')
+local parsers = require 'nvim-treesitter.parsers'
 
 local M = {}
 
 function M.create_augroups(definitions)
   for group_name, definition in pairs(definitions) do
     cmd('augroup ' .. group_name)
-    cmd('autocmd!')
+    cmd 'autocmd!'
     for _, def in ipairs(definition) do
-      local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
+      local command = table.concat(vim.tbl_flatten { 'autocmd', def }, ' ')
       cmd(command)
     end
-    cmd('augroup END')
+    cmd 'augroup END'
   end
 end
 
--- Get the language tree from the given parser that is in the given range. Only 
--- accept the given languages. Ignores all language trees with a language not 
+-- Get the language tree from the given parser that is in the given range. Only
+-- accept the given languages. Ignores all language trees with a language not
 -- included in `only_languages` parameter.
 --
--- This function is pretty much copied from Neovim core 
--- (`LanguageTree:language_for_range`), but includes filtering of the injected 
+-- This function is pretty much copied from Neovim core
+-- (`LanguageTree:language_for_range`), but includes filtering of the injected
 -- languages.
 local function language_for_range(parser, range, only_languages)
   for _, child in pairs(parser._children) do
@@ -55,8 +55,8 @@ local function tree_contains(tree, range)
   return false
 end
 
--- Get the node that is on the same line as the cursor, but on the first 
--- NON-WHITESPACE character. This also handles injected languages via language 
+-- Get the node that is on the same line as the cursor, but on the first
+-- NON-WHITESPACE character. This also handles injected languages via language
 -- tree.
 --
 -- For example, if the cursor is at "|":
@@ -64,14 +64,16 @@ end
 --
 -- then will return the <div> node, even though it isn't at the cursor position
 --
--- Returns the node at the cursor's line and the language tree for that 
+-- Returns the node at the cursor's line and the language tree for that
 -- injection.
 function M.get_node_at_cursor_start_of_line(only_languages, winnr)
-  if not parsers.has_parser() then return end
+  if not parsers.has_parser() then
+    return
+  end
 
   -- Get the position for the queried node
   local cursor = api.nvim_win_get_cursor(winnr or 0)
-  local first_non_whitespace_col = fn.match(fn.getline('.'), '\\S')
+  local first_non_whitespace_col = fn.match(fn.getline '.', '\\S')
   local range = {
     cursor[1] - 1,
     first_non_whitespace_col,
@@ -84,14 +86,16 @@ function M.get_node_at_cursor_start_of_line(only_languages, winnr)
   local language_tree = language_for_range(root, range, only_languages)
 
   -- Get the sub-tree of the language tree that contains the given range.
-  -- If there are multiple trees in the buffer for the same injected language, 
+  -- If there are multiple trees in the buffer for the same injected language,
   -- then we need to make sure that we are operating on the correct tree.
-  local tree = vim.tbl_filter(function (tree)
+  local tree = vim.tbl_filter(function(tree)
     return tree_contains(tree, range)
   end, language_tree:trees())[1]
 
   -- avoid crash on empty files
-  if not tree then return nil, language_tree end
+  if not tree then
+    return nil, language_tree
+  end
 
   -- Get the actual node on the location
   local injected_root = tree:root()
