@@ -133,6 +133,29 @@ rest of the keys refer to the type of the treesitter node. In this example, if
 your cursor is inside a `jsx_element`, then the `{/* %s */}` `commentstring` 
 will be set.
 
+Finally, it is possible to have each `commentstring` configuration be a table 
+with custom keys. This can be used to configure separate single and multi-line 
+comment styles (useful when integrating with a commenting plugin):
+
+```lua
+require'nvim-treesitter.configs'.setup {
+  context_commentstring = {
+    enable = true,
+    config = {
+      typescript = { __default = '// %s', __multiline = '/* %s */' }
+    }
+  }
+}
+```
+
+Then, the custom key can be passed to `update_commentstring`:
+
+```lua
+require('ts_context_commentstring.internal').update_commentstring({
+  key = '__multiline',
+})
+```
+
 Note that the language refers to the *treesitter* language, not the filetype or 
 the file extension.
 

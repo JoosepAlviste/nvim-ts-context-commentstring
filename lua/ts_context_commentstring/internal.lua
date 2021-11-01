@@ -16,36 +16,38 @@ local M = {}
 -- `:lua print(require'nvim-treesitter.parsers'.get_parser():language_for_range({ line, col, line, col }):lang())`
 M.config = {
   -- Languages that have a single comment style
-  typescript = '// %s',
+  typescript = { __default = '// %s', __multiline = '/* %s */' },
   css = '/* %s */',
   scss = '/* %s */',
-  php = '// %s',
+  php = { __default = '// %s', __multiline = '/* %s */' },
   html = '<!-- %s -->',
   svelte = '<!-- %s -->',
   vue = '<!-- %s -->',
   handlebars = '{{! %s }}',
   glimmer = '{{! %s }}',
   graphql = '# %s',
-  lua = '-- %s',
+  lua = { __default = '-- %s', __multiline = '--[[ %s ]]' },
 
   -- Languages that can have multiple types of comments
   tsx = {
     __default = '// %s',
+    __multiline = '/* %s */',
     jsx_element = '{/* %s */}',
     jsx_fragment = '{/* %s */}',
-    jsx_attribute = '// %s',
-    comment = '// %s',
-    call_expression = '// %s',
-    statement_block = '// %s',
+    jsx_attribute = { __default = '// %s', __multiline = '/* %s */' },
+    comment = { __default = '// %s', __multiline = '/* %s */' },
+    call_expression = { __default = '// %s', __multiline = '/* %s */' },
+    statement_block = { __default = '// %s', __multiline = '/* %s */' },
   },
   javascript = {
     __default = '// %s',
+    __multiline = '/* %s */',
     jsx_element = '{/* %s */}',
     jsx_fragment = '{/* %s */}',
-    jsx_attribute = '// %s',
-    comment = '// %s',
-    call_expression = '// %s',
-    statement_block = '// %s',
+    jsx_attribute = { __default = '// %s', __multiline = '/* %s */' },
+    comment = { __default = '// %s', __multiline = '/* %s */' },
+    call_expression = { __default = '// %s', __multiline = '/* %s */' },
+    statement_block = { __default = '// %s', __multiline = '/* %s */' },
   },
 }
 
@@ -79,7 +81,10 @@ end
 -- it!
 --
 -- @returns the commentstring or nil if not found
-function M.calculate_commentstring()
+function M.calculate_commentstring(args)
+  args = args or {}
+  local key = args.key or '__default'
+
   local node, language_tree = utils.get_node_at_cursor_start_of_line(vim.tbl_keys(M.config))
 
   if not node and not language_tree then
@@ -89,7 +94,7 @@ function M.calculate_commentstring()
   local language = language_tree:lang()
   local language_config = M.config[language]
 
-  return M.check_node(node, language_config)
+  return M.check_node(node, language_config, key)
 end
 
 -- Update the `commentstring` setting based on the current location of the
@@ -98,8 +103,8 @@ end
 --
 -- **Note:** We should treat this function like a public API, try not to break
 -- it!
-function M.update_commentstring()
-  local found_commentstring = M.calculate_commentstring()
+function M.update_commentstring(args)
+  local found_commentstring = M.calculate_commentstring(args)
 
   if found_commentstring then
     api.nvim_buf_set_option(0, 'commentstring', found_commentstring)
@@ -114,7 +119,9 @@ end
 
 -- Check if the given node matches any of the given types. If not, recursively
 -- check its parent node.
-function M.check_node(node, language_config)
+function M.check_node(node, language_config, commentstring_key)
+  commentstring_key = commentstring_key or '__default'
+
   -- There is no commentstring configuration for this language, use the
   -- `ts_original_commentstring`
   if not language_config then
@@ -124,18 +131,18 @@ function M.check_node(node, language_config)
   -- There is no node, we have reached the top-most node, use the default
   -- commentstring from language config
   if not node then
-    return language_config.__default or language_config
+    return language_config[commentstring_key] or language_config.__default or language_config
   end
 
-  local type = node:type()
-  local match = language_config[type]
+  local node_type = node:type()
+  local match = language_config[node_type]
 
   if match then
-    return match
+    return match[commentstring_key] or match.__default or match
   end
 
   -- Recursively check the parent node
-  return M.check_node(node:parent(), language_config)
+  return M.check_node(node:parent(), language_config, commentstring_key)
 end
 
 -- Attach the module to the current buffer
