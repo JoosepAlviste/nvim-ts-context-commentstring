@@ -1,0 +1,16 @@
+name: default
+
+on: [pull_request]
+
+jobs:
+  lint:
+    name: Lint Lua code
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+      - name: Stylua check
+        uses: JohnnyMorganz/stylua-action@1.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --color always --check .
