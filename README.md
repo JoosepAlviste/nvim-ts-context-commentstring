@@ -214,6 +214,12 @@ require('kommentary.config').configure_language('typescriptreact', {
 })
 ```
 
+Note that currently the `'default'` language configuration
+[does not run](https://github.com/b3nj5m1n/kommentary/blob/main/lua/kommentary/config.lua#L316)
+`hook_function`, so explicit language configurations will need to be
+supplied as shown above. See
+[issue #19](https://github.com/JoosepAlviste/nvim-ts-context-commentstring/issues/19#issuecomment-916334428).
+
 #### [`nvim-comment`](https://github.com/terrortylor/nvim-comment)
 
 `nvim-comment` can easily be configured to trigger the `commentstring` updating
