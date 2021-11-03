@@ -264,6 +264,35 @@ require("nvim_comment").setup({
 })
 ```
 
+#### [`Comment.nvim`](https://github.com/numToStr/Comment.nvim)
+
+First, disable the `CursorHold` autocommand of this plugin:
+
+```lua
+require'nvim-treesitter.configs'.setup {
+  context_commentstring = {
+    enable = true,
+    enable_autocmd = false,
+  }
+}
+```
+
+Then, configure `Comment.nvim` to trigger the `commentstring` updating logic 
+with its `pre_hook` configuration:
+
+```lua
+require('Comment').setup {
+  pre_hook = function(ctx)
+    local U = require 'Comment.utils'
+    local type = ctx.ctype == U.ctype.line and '__default' or '__multiline'
+    return require('ts_context_commentstring.internal').calculate_commentstring {
+      key = type,
+    }
+  end,
+}
+```
+
+
 ## More demos
 
 **React:**
