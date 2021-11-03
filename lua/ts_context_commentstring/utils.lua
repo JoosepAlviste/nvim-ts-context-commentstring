@@ -55,9 +55,43 @@ local function tree_contains(tree, range)
   return false
 end
 
--- Get the node that is on the same line as the cursor, but on the first
--- NON-WHITESPACE character. This also handles injected languages via language
--- tree.
+-- Get the location of the cursor to be used to get the treesitter node
+-- function.
+--
+-- @treturn {number, number} Line, column
+function M.get_cursor_location()
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  return { cursor[1] - 1, cursor[2] }
+end
+
+-- Get the location of the cursor line first non-blank character.
+--
+-- @treturn {number, number} Line, column
+function M.get_cursor_line_non_whitespace_col_location()
+  local cursor = api.nvim_win_get_cursor(0)
+  local first_non_whitespace_col = fn.match(fn.getline '.', '\\S')
+
+  return {
+    cursor[1] - 1,
+    first_non_whitespace_col,
+  }
+end
+
+-- Get the location of the visual section start.
+--
+-- @treturn {number, number} Line, column
+function M.get_visual_start_location()
+  local first_non_whitespace_col = fn.match(fn.getline '.', '\\S')
+
+  return {
+    vim.fn.getpos("'<")[2] - 1,
+    first_non_whitespace_col,
+  }
+end
+
+--- Get the node that is on the given location (default first non-whitespace
+-- character of the cursor line). This also handles injected languages via
+-- language tree.
 --
 -- For example, if the cursor is at "|":
 --    |   <div>
@@ -66,19 +100,23 @@ end
 --
 -- Returns the node at the cursor's line and the language tree for that
 -- injection.
-function M.get_node_at_cursor_start_of_line(only_languages, winnr)
+--
+-- @tparam {string,...} only_languages List of languages to filter for, all
+--   other languages will be ignored.
+-- @tparam[opt] {number, number} location Line, column where to start
+--   traversing the tree. Defaults to cursor start of line. This usually makes
+--   the most sense when commenting the whole line.
+function M.get_node_at_cursor_start_of_line(only_languages, location)
   if not parsers.has_parser() then
     return
   end
 
-  -- Get the position for the queried node
-  local cursor = api.nvim_win_get_cursor(winnr or 0)
-  local first_non_whitespace_col = fn.match(fn.getline '.', '\\S')
+  location = location or M.get_cursor_line_non_whitespace_col_location()
   local range = {
-    cursor[1] - 1,
-    first_non_whitespace_col,
-    cursor[1] - 1,
-    first_non_whitespace_col,
+    location[1],
+    location[2],
+    location[1],
+    location[2],
   }
 
   -- Get the language tree with nodes inside the given range
