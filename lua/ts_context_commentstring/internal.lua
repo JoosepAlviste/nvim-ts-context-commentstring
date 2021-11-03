@@ -84,8 +84,9 @@ end
 function M.calculate_commentstring(args)
   args = args or {}
   local key = args.key or '__default'
+  local location = args.location or nil
 
-  local node, language_tree = utils.get_node_at_cursor_start_of_line(vim.tbl_keys(M.config))
+  local node, language_tree = utils.get_node_at_cursor_start_of_line(vim.tbl_keys(M.config), location)
 
   if not node and not language_tree then
     return nil

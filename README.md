@@ -133,9 +133,12 @@ rest of the keys refer to the type of the treesitter node. In this example, if
 your cursor is inside a `jsx_element`, then the `{/* %s */}` `commentstring` 
 will be set.
 
-Finally, it is possible to have each `commentstring` configuration be a table 
-with custom keys. This can be used to configure separate single and multi-line 
-comment styles (useful when integrating with a commenting plugin):
+Note that the language refers to the *treesitter* language, not the filetype or 
+the file extension.
+
+Additionally, it is possible to have each `commentstring` configuration be a 
+table with custom keys. This can be used to configure separate single and 
+multi-line comment styles (useful when integrating with a commenting plugin):
 
 ```lua
 require'nvim-treesitter.configs'.setup {
@@ -156,8 +159,16 @@ require('ts_context_commentstring.internal').update_commentstring({
 })
 ```
 
-Note that the language refers to the *treesitter* language, not the filetype or 
-the file extension.
+Finally, it is possible to customize the tree traversal start location when 
+calling `update_commentstring`, this is useful in commenting plugin 
+integrations. There are some useful helper functions exported from 
+`ts_context_commentstring.utils`:
+
+```lua
+require('ts_context_commentstring.internal').calculate_commentstring {
+  location = require('ts_context_commentstring.utils').get_cursor_location(),
+}
+```
 
 
 ### Behavior
@@ -284,15 +295,24 @@ require'nvim-treesitter.configs'.setup {
 ```
 
 Then, configure `Comment.nvim` to trigger the `commentstring` updating logic 
-with its `pre_hook` configuration:
+with its `pre_hook` configuration (note that we can add some extra logic to 
+improve the integration granularity):
 
 ```lua
 require('Comment').setup {
   pre_hook = function(ctx)
     local U = require 'Comment.utils'
-    local type = ctx.ctype == U.ctype.line and '__default' or '__multiline'
+
+    local location = nil
+    if ctx.ctype == U.ctype.block then
+      location = require('ts_context_commentstring.utils').get_cursor_location()
+    elseif ctx.cmotion == U.cmotion.v or ctx.cmotion == U.cmotion.V then
+      location = require('ts_context_commentstring.utils').get_visual_start_location()
+    end
+
     return require('ts_context_commentstring.internal').calculate_commentstring {
-      key = type,
+      key = ctx.ctype == U.ctype.line and '__default' or '__multiline',
+      location = location,
     }
   end,
 }
