@@ -1,22 +1,9 @@
 local api = vim.api
-local cmd = vim.cmd
 local fn = vim.fn
 
 local parsers = require 'nvim-treesitter.parsers'
 
 local M = {}
-
-function M.create_augroups(definitions)
-  for group_name, definition in pairs(definitions) do
-    cmd('augroup ' .. group_name)
-    cmd 'autocmd!'
-    for _, def in ipairs(definition) do
-      local command = table.concat(vim.tbl_flatten { 'autocmd', def }, ' ')
-      cmd(command)
-    end
-    cmd 'augroup END'
-  end
-end
 
 -- Get the language tree from the given parser that is in the given range. Only
 -- accept the given languages. Ignores all language trees with a language not

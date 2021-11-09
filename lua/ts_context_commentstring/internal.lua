@@ -1,4 +1,5 @@
 local api = vim.api
+local cmd = vim.cmd
 
 local utils = require 'ts_context_commentstring.utils'
 local configs = require 'nvim-treesitter.configs'
@@ -67,11 +68,10 @@ function M.setup_buffer()
   end
 
   if enable_autocmd then
-    utils.create_augroups {
-      context_commentstring_ft = {
-        { 'CursorHold', '<buffer>', [[lua require('ts_context_commentstring.internal').update_commentstring()]] },
-      },
-    }
+    cmd 'augroup context_commentstring_ft '
+    cmd 'autocmd!'
+    cmd [[autocmd CursorHold <buffer> lua require('ts_context_commentstring.internal').update_commentstring()]]
+    cmd 'augroup END'
   end
 end
 
