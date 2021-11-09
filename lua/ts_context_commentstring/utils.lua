@@ -3,15 +3,23 @@ local fn = vim.fn
 
 local parsers = require 'nvim-treesitter.parsers'
 
+---@alias ts_context_commentstring.Location number[] 2-tuple of (line, column)
+
 local M = {}
 
--- Get the language tree from the given parser that is in the given range. Only
--- accept the given languages. Ignores all language trees with a language not
--- included in `only_languages` parameter.
---
--- This function is pretty much copied from Neovim core
--- (`LanguageTree:language_for_range`), but includes filtering of the injected
--- languages.
+---Get the language tree from the given parser that is in the given range. Only
+---accept the given languages. Ignores all language trees with a language not
+---included in `only_languages` parameter.
+---
+---This function is pretty much copied from Neovim core
+---(`LanguageTree:language_for_range`), but includes filtering of the injected
+---languages.
+---
+---@param parser table
+---@param range number[]
+---@param only_languages string[] Languages to keep, skip others
+---
+---@return table
 local function language_for_range(parser, range, only_languages)
   for _, child in pairs(parser._children) do
     if child:contains(range) then
@@ -28,8 +36,11 @@ local function language_for_range(parser, range, only_languages)
   return parser
 end
 
--- Check if the given language tree contains the given range.
--- This function is copied from Neovim core.
+---Check if the given language tree contains the given range.
+---This function is copied from Neovim core.
+---
+---@param tree table
+---@param range array
 local function tree_contains(tree, range)
   local start_row, start_col, end_row, end_col = tree:root():range()
   local start_fits = start_row < range[1] or (start_row == range[1] and start_col <= range[2])
@@ -42,18 +53,18 @@ local function tree_contains(tree, range)
   return false
 end
 
--- Get the location of the cursor to be used to get the treesitter node
--- function.
---
--- @treturn {number, number} Line, column
+---Get the location of the cursor to be used to get the treesitter node
+---function.
+---
+---@return ts_context_commentstring.Location
 function M.get_cursor_location()
   local cursor = vim.api.nvim_win_get_cursor(0)
   return { cursor[1] - 1, cursor[2] }
 end
 
--- Get the location of the cursor line first non-blank character.
---
--- @treturn {number, number} Line, column
+---Get the location of the cursor line first non-blank character.
+---
+---@return ts_context_commentstring.Location
 function M.get_cursor_line_non_whitespace_col_location()
   local cursor = api.nvim_win_get_cursor(0)
   local first_non_whitespace_col = fn.match(fn.getline '.', '\\S')
@@ -64,9 +75,9 @@ function M.get_cursor_line_non_whitespace_col_location()
   }
 end
 
--- Get the location of the visual section start.
---
--- @treturn {number, number} Line, column
+---Get the location of the visual section start.
+---
+---@return ts_context_commentstring.Location
 function M.get_visual_start_location()
   local first_non_whitespace_col = fn.match(fn.getline '.', '\\S')
 
@@ -76,23 +87,26 @@ function M.get_visual_start_location()
   }
 end
 
---- Get the node that is on the given location (default first non-whitespace
--- character of the cursor line). This also handles injected languages via
--- language tree.
---
--- For example, if the cursor is at "|":
---    |   <div>
---
--- then will return the <div> node, even though it isn't at the cursor position
---
--- Returns the node at the cursor's line and the language tree for that
--- injection.
---
--- @tparam {string,...} only_languages List of languages to filter for, all
---   other languages will be ignored.
--- @tparam[opt] {number, number} location Line, column where to start
---   traversing the tree. Defaults to cursor start of line. This usually makes
---   the most sense when commenting the whole line.
+---Get the node that is on the given location (default first non-whitespace
+---character of the cursor line). This also handles injected languages via
+---language tree.
+---
+---For example, if the cursor is at "|":
+---   |   <div>
+---
+---then will return the <div> node, even though it isn't at the cursor position
+---
+---Returns the node at the cursor's line and the language tree for that
+---injection.
+---
+---@param only_languages string[] List of languages to filter for, all
+---  other languages will be ignored.
+---@param location? ts_context_commentstring.Location location Line, column
+---  where to start traversing the tree. Defaults to cursor start of line.
+---  This usually makes the most sense when commenting the whole line.
+---
+---@return table node, table language_tree Node and language tree for the
+---  location
 function M.get_node_at_cursor_start_of_line(only_languages, location)
   if not parsers.has_parser() then
     return
