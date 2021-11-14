@@ -118,6 +118,14 @@ function M.calculate_commentstring(args)
     return nil
   end
 
+  local pre_hook = configs.get_module('context_commentstring').pre_hook
+  if pre_hook then
+    local commentstring = pre_hook(node, language_tree)
+    if commentstring then
+      return commentstring
+    end
+  end
+
   local language = language_tree:lang()
   local language_config = M.config[language]
 
