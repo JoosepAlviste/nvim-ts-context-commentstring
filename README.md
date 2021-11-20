@@ -171,22 +171,24 @@ require('ts_context_commentstring.internal').calculate_commentstring {
 ```
 
 If you want to calculate your own `commentstring` you are able to do so with
-the `pre_hook`.
+the `custom_calculation` option:
+
 ```lua
 require'nvim-treesitter.configs'.setup {
   context_commentstring = {
     enable = true,
-    pre_hook = function(node, language_tree)
+    custom_calculation = function(node, language_tree)
         ...
     end
   }
 }
 ```
+
 This is a function that takes in the current node and the language tree which
 could be used for context like figuring out which language you should use a 
-commentstring for. You can also for example figure out which type the current
-node is. You need to return a commentstring in the `pre_hook`if you want it to 
-be set.
+`commentstring` for. You can also for example figure out which type the current
+node is. You need to return a `commentstring` in the `custom_calculation` if you 
+want it to be set.
 
 ### Behavior
 

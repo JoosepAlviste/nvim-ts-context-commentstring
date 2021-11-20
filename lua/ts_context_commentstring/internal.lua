@@ -118,9 +118,9 @@ function M.calculate_commentstring(args)
     return nil
   end
 
-  local pre_hook = configs.get_module('context_commentstring').pre_hook
-  if pre_hook then
-    local commentstring = pre_hook(node, language_tree)
+  local custom_calculation = configs.get_module('context_commentstring').custom_calculation
+  if custom_calculation then
+    local commentstring = custom_calculation(node, language_tree)
     if commentstring then
       return commentstring
     end
