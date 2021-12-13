@@ -48,6 +48,7 @@ M.config = {
   glimmer = '{{! %s }}',
   graphql = '# %s',
   lua = { __default = '-- %s', __multiline = '--[[ %s ]]' },
+  vim = '" %s',
 
   -- Languages that can have multiple types of comments
   tsx = {
