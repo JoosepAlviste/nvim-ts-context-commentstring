@@ -70,6 +70,7 @@ M.config = {
     comment = { __default = '// %s', __multiline = '/* %s */' },
     call_expression = { __default = '// %s', __multiline = '/* %s */' },
     statement_block = { __default = '// %s', __multiline = '/* %s */' },
+    spread_element = { __default = '// %s', __multiline = '/* %s */' },
   },
 }
 
