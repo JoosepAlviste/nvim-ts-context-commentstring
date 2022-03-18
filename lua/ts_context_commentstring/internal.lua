@@ -39,7 +39,7 @@ M.config = {
   -- Languages that have a single comment style
   typescript = { __default = '// %s', __multiline = '/* %s */' },
   css = '/* %s */',
-  scss = '/* %s */',
+  scss = { __default = '// %s', __multiline = '/* %s */' },
   php = { __default = '// %s', __multiline = '/* %s */' },
   html = '<!-- %s -->',
   svelte = '<!-- %s -->',
