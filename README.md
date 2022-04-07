@@ -337,6 +337,32 @@ require('Comment').setup {
 }
 ```
 
+#### [`mini.comment`](https://github.com/echasnovski/mini.nvim#minicomment)
+
+`mini.comment` also relies on `commentstring` option and implements hook functionality. It can be used to configure updating `commentstring` before commenting.
+
+First, disable the `CursorHold` autocommand of this plugin:
+
+```lua
+require'nvim-treesitter.configs'.setup {
+  context_commentstring = {
+    enable = true,
+    enable_autocmd = false,
+  }
+}
+```
+
+Then, configure `mini.comment` to trigger the `commentstring` updating logic by supplying custom `config.hooks.pre`:
+
+```lua
+require('mini.comment').setup({
+  hooks = {
+    pre = function()
+      require('ts_context_commentstring.internal').update_commentstring()
+    end,
+  },
+})
+```
 
 ## More demos
 
