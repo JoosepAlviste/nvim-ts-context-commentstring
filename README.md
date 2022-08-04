@@ -237,13 +237,18 @@ If `vim-commentary` is detected, then this plugin automatically sets up
 `vim-commentary` mappings to first update the `commentstring`, and then trigger 
 `vim-commentary`.
 
-If you don't use default mappings, you can disable them:
+You can override default mappings, or disable them by specifying `false`.
 
 ```lua
 require'nvim-treesitter.configs'.setup {
   context_commentstring = {
     enable = true,
-    disable_commentary_mappings = true,
+    commentary_integration = {
+      -- change default mapping
+      Commentary = 'g/',
+      -- disable default mapping
+      CommentaryLine = false,
+    },
   }
 }
 ```

@@ -88,9 +88,7 @@ function M.setup_buffer()
   -- If vim-commentary is installed, set up mappings for it
   if vim.g.loaded_commentary == 1 then
     enable_autocmd = false
-    if not plugin_config.disable_commentary_mappings then
-      require('ts_context_commentstring.integrations.vim_commentary').set_up_maps()
-    end
+    require('ts_context_commentstring.integrations.vim_commentary').set_up_maps(plugin_config.commentary_integration)
   end
 
   if enable_autocmd then
