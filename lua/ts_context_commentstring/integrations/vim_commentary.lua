@@ -1,32 +1,32 @@
 local gmap = vim.api.nvim_set_keymap
 local bmap = vim.api.nvim_buf_set_keymap
 
+for _, mode in ipairs { 'n', 'x', 'o' } do
+  gmap(
+    mode,
+    '<Plug>ContextCommentary',
+    [[v:lua.context_commentstring.update_commentstring_and_run('Commentary')]],
+    { expr = true }
+  )
+end
+gmap(
+  'n',
+  '<Plug>ContextCommentaryLine',
+  [[v:lua.context_commentstring.update_commentstring_and_run('CommentaryLine')]],
+  { expr = true }
+)
+gmap(
+  'n',
+  '<Plug>ContextChangeCommentary',
+  [[v:lua.context_commentstring.update_commentstring_and_run('ChangeCommentary')]],
+  { expr = true }
+)
+
 local M = {}
 
 ---Set up vim-commentary mappings to first update the commentstring, and then
 ---run vim-commentary
 function M.set_up_maps(maps)
-  for _, mode in ipairs { 'n', 'x', 'o' } do
-    gmap(
-      mode,
-      '<Plug>ContextCommentary',
-      [[v:lua.context_commentstring.update_commentstring_and_run('Commentary')]],
-      { expr = true }
-    )
-  end
-  gmap(
-    'n',
-    '<Plug>ContextCommentaryLine',
-    [[v:lua.context_commentstring.update_commentstring_and_run('CommentaryLine')]],
-    { expr = true }
-  )
-  gmap(
-    'n',
-    '<Plug>ContextChangeCommentary',
-    [[v:lua.context_commentstring.update_commentstring_and_run('ChangeCommentary')]],
-    { expr = true }
-  )
-
   maps = (maps and type(maps) == 'table') and maps or {}
   maps = vim.tbl_extend('force', {
     Commentary = 'gc',
