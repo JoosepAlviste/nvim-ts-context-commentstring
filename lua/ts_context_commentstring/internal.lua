@@ -81,13 +81,16 @@ function M.setup_buffer()
   -- is no match
   api.nvim_buf_set_var(0, 'ts_original_commentstring', api.nvim_buf_get_option(0, 'commentstring'))
 
-  local enable_autocmd = configs.get_module('context_commentstring').enable_autocmd
+  local plugin_config = configs.get_module 'context_commentstring'
+  local enable_autocmd = plugin_config.enable_autocmd
   enable_autocmd = enable_autocmd == nil and true or enable_autocmd
 
   -- If vim-commentary is installed, set up mappings for it
   if vim.g.loaded_commentary == 1 then
     enable_autocmd = false
-    require('ts_context_commentstring.integrations.vim_commentary').set_up_maps()
+    if not plugin_config.disable_commentary_mappings then
+      require('ts_context_commentstring.integrations.vim_commentary').set_up_maps()
+    end
   end
 
   if enable_autocmd then
