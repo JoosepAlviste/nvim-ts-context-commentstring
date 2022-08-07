@@ -75,7 +75,7 @@ function M.get_cursor_line_non_whitespace_col_location()
   }
 end
 
----Get the location of the visual section start.
+---Get the location of the visual selection start.
 ---
 ---@return ts_context_commentstring.Location
 function M.get_visual_start_location()
@@ -84,6 +84,16 @@ function M.get_visual_start_location()
   return {
     vim.fn.getpos("'<")[2] - 1,
     first_non_whitespace_col,
+  }
+end
+
+---Get the location of the visual selection end.
+---
+---@return ts_context_commentstring.Location
+function M.get_visual_end_location()
+  return {
+    vim.fn.getpos("'>")[2] - 1,
+    vim.fn.getpos("'>")[3] - 1,
   }
 end
 
