@@ -12,7 +12,8 @@ add any mappings for commenting. It is recommended to use a commenting plugin
 like [`vim-commentary`](https://github.com/tpope/vim-commentary/) alongside this 
 plugin.
 
-![Demo gif](demo/demo.gif)
+![Demo gif](https://user-images.githubusercontent.com/9450943/185669080-a5f05064-c247-47f5-9b63-d34a9871186e.gif)
+
 
 
 ## Getting started
@@ -383,15 +384,15 @@ require('mini.comment').setup({
 
 **React:**
 
-![React demo gif](demo/react.gif)
+![React demo gif](https://user-images.githubusercontent.com/9450943/185669182-d523c328-251e-41b0-a76e-d867c401a040.gif)
 
 **Svelte:**
 
-![Svelte demo gif](demo/svelte.gif)
+![Svelte demo gif](https://user-images.githubusercontent.com/9450943/185669229-ad10848e-ba13-45e0-8447-a3a1f03eb85e.gif)
 
 **HTML:**
 
-![HTML demo gif](demo/html.gif)
+![html](https://user-images.githubusercontent.com/9450943/185669275-cdfa7fa4-092e-439b-822e-330559a7d4d7.gif)
 
 **Nesting:**
 
@@ -399,4 +400,4 @@ I injected HTML into JavaScript strings and created multiple levels of nesting
 with language tree. This sort of nesting of languages works without any extra 
 configuration in the plugin.
 
-![Nesting demo gif](demo/nested.gif)
+![nested](https://user-images.githubusercontent.com/9450943/185669303-e6958706-f5b7-439c-98f7-2393e6325107.gif)
