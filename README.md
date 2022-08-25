@@ -78,6 +78,7 @@ language tree (see
 - `html`
 - `svelte`
 - `vue`
+- `astro`
 - `handlebars`
 - `glimmer`
 - `graphql`
