@@ -44,6 +44,7 @@ M.config = {
   html = '<!-- %s -->',
   svelte = '<!-- %s -->',
   vue = '<!-- %s -->',
+  astro = '<!-- %s -->',
   handlebars = '{{! %s }}',
   glimmer = '{{! %s }}',
   graphql = '# %s',
