@@ -10,7 +10,7 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v2
       - name: Stylua check
-        uses: JohnnyMorganz/stylua-action@1.0.0
+        uses: JohnnyMorganz/stylua-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --color always --check .
