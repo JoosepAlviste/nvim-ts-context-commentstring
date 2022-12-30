@@ -3,6 +3,8 @@ local fn = vim.fn
 
 local parsers = require 'nvim-treesitter.parsers'
 
+---Coordinates for a location. Both the line and the column are 0-indexed (e.g.,
+---line nr 10 is line 9, the first column is 0).
 ---@alias ts_context_commentstring.Location number[] 2-tuple of (line, column)
 
 local M = {}
