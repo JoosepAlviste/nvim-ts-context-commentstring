@@ -255,6 +255,17 @@ require'nvim-treesitter.configs'.setup {
 }
 ```
 
+Alternatively, update your mappings to include the `Context` prefix
+
+```lua
+vim.keymap.set(
+  "n",
+  "g/",
+  '<Plug>ContextCommentaryLine', -- Previously '<Plug>CommentaryLine'
+  { silent = true, desc = "Comment line" }
+)
+```
+
 #### [`kommentary`](https://github.com/b3nj5m1n/kommentary)
 
 `kommentary` can also trigger the `commentstring` updating logic before 
