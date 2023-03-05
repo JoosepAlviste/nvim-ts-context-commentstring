@@ -51,6 +51,7 @@ M.config = {
   lua = { __default = '-- %s', __multiline = '--[[ %s ]]' },
   vim = '" %s',
   twig = '{# %s #}',
+  python = { __default = '# %s', __multiline = '""" %s """' },
 
   -- Languages that can have multiple types of comments
   tsx = {
