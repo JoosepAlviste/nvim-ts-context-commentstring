@@ -78,6 +78,8 @@ M.config = {
   },
 }
 
+M.config.rescript = M.config.tsx
+
 ---Initialize the plugin in the current buffer
 function M.setup_buffer()
   -- Save the original commentstring so that it can be restored later if there
