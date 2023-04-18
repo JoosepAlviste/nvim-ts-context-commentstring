@@ -1,7 +1,7 @@
 *ts-context-commentstring.txt*
 
 ==============================================================================
-1. nvim-ts-context-commentstring                   *ts-context-commentstring*
+1. nvim-ts-context-commentstring               *ts-context-commentstring-intro*
 
 *ts-context-commentstring* is a Neovim plugin that uses Treesitter to set the 
 'commentstring' option based on the cursor location in a file.
