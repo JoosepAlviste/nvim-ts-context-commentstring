@@ -23,6 +23,7 @@ language tree (see `lua/ts_context_commentstring/internal.lua`):
 - `html`
 - `javascript`
 - `lua`
+- `nix`
 - `php`
 - `python`
 - `rescript`

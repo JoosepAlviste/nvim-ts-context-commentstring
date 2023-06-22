@@ -49,7 +49,7 @@ require('nvim-treesitter.configs').setup {
   -- Here are the supported languages:
   ensure_installed = {
     'astro', 'css', 'glimmer', 'graphql', 'handlebars', 'html', 'javascript',
-    'lua', 'php', 'python', 'rescript', 'scss', 'svelte', 'tsx', 'twig',
+    'lua', 'nix', 'php', 'python', 'rescript', 'scss', 'svelte', 'tsx', 'twig',
     'typescript', 'vim', 'vue',
   },
 

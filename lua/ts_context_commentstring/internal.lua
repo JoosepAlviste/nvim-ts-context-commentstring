@@ -52,6 +52,7 @@ M.config = {
   vim = '" %s',
   twig = '{# %s #}',
   python = { __default = '# %s', __multiline = '""" %s """' },
+  nix = { __default = '# %s', __multiline = '/* %s */' },
 
   -- Languages that can have multiple types of comments
   tsx = {
