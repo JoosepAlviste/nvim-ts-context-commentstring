@@ -50,6 +50,7 @@ M.config = {
   graphql = '# %s',
   lua = { __default = '-- %s', __multiline = '--[[ %s ]]' },
   vim = '" %s',
+  sql = '-- %s',
   twig = '{# %s #}',
   python = { __default = '# %s', __multiline = '""" %s """' },
   nix = { __default = '# %s', __multiline = '/* %s */' },
