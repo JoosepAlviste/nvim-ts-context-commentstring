@@ -28,6 +28,7 @@ language tree (see `lua/ts_context_commentstring/internal.lua`):
 - `python`
 - `rescript`
 - `scss`
+- `sql`
 - `svelte`
 - `tsx`
 - `twig`
