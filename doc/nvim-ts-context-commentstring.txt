@@ -110,7 +110,7 @@ multi-line comment styles (useful when integrating with a commenting plugin):
 
 Then, the custom key can be passed to `update_commentstring`:
 >lua
-  require('ts_context_commentstring.internal').update_commentstring {
+  require('ts_context_commentstring').update_commentstring {
     key = '__multiline',
   }
 <
@@ -120,7 +120,7 @@ calling `update_commentstring`, this is useful in commenting plugin
 integrations. There are some useful helper functions exported from 
 `ts_context_commentstring.utils`:
 >lua
-  require('ts_context_commentstring.internal').calculate_commentstring {
+  require('ts_context_commentstring').calculate_commentstring {
     location = require('ts_context_commentstring.utils').get_cursor_location(),
   }
 <

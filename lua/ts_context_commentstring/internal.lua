@@ -22,7 +22,7 @@ function M.setup_buffer()
   if enable_autocmd then
     cmd 'augroup context_commentstring_ft '
     cmd 'autocmd!'
-    cmd [[autocmd CursorHold <buffer> lua require('ts_context_commentstring.internal').update_commentstring()]]
+    cmd [[autocmd CursorHold <buffer> lua require('ts_context_commentstring').update_commentstring()]]
     cmd 'augroup END'
   end
 end
