@@ -26,15 +26,8 @@ local M = {}
 
 ---Set up vim-commentary mappings to first update the commentstring, and then
 ---run vim-commentary
+---@param maps ts_context_commentstring.CommentaryConfig
 function M.set_up_maps(maps)
-  maps = (maps and type(maps) == 'table') and maps or {}
-  maps = vim.tbl_extend('force', {
-    Commentary = 'gc',
-    CommentaryLine = 'gcc',
-    ChangeCommentary = 'cgc',
-    CommentaryUndo = 'gcu',
-  }, maps)
-
   if maps.Commentary then
     for _, mode in ipairs { 'n', 'x', 'o' } do
       bmap(0, mode, maps.Commentary, '<Plug>ContextCommentary', {})
