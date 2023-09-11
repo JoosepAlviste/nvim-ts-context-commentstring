@@ -62,7 +62,7 @@ require('nvim-treesitter.configs').setup {
 > **Note**
 >
 > There is a minimal configuration file available at 
-> [`utils/minimal_init.lua`](./utils/minimal_init.lua) for reference.
+> [`utils/minimal_init.lua`](utils/minimal_init.lua) for reference.
 
 > **Note**
 >
