@@ -1,5 +1,4 @@
 local api = vim.api
-local cmd = vim.cmd
 
 local utils = require 'ts_context_commentstring.utils'
 local config = require 'ts_context_commentstring.config'
@@ -20,10 +19,15 @@ function M.setup_buffer()
   end
 
   if enable_autocmd then
-    cmd 'augroup context_commentstring_ft '
-    cmd 'autocmd!'
-    cmd [[autocmd CursorHold <buffer> lua require('ts_context_commentstring').update_commentstring()]]
-    cmd 'augroup END'
+    local group = api.nvim_create_augroup('context_commentstring_ft', { clear = true })
+    api.nvim_create_autocmd('CursorHold', {
+      buffer = 0,
+      group = group,
+      desc = 'Change the commentstring on cursor hold using Treesitter',
+      callback = function()
+        require('ts_context_commentstring').update_commentstring()
+      end,
+    })
   end
 end
 
@@ -143,7 +147,7 @@ _G.context_commentstring = {}
 ---@return string
 function _G.context_commentstring.update_commentstring_and_run(mapping)
   M.update_commentstring()
-  return vim.api.nvim_replace_termcodes('<Plug>' .. mapping, true, true, true)
+  return api.nvim_replace_termcodes('<Plug>' .. mapping, true, true, true)
 end
 
 return M
