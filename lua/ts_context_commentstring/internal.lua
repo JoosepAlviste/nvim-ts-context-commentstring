@@ -7,6 +7,10 @@ local M = {}
 
 ---Initialize the plugin in the current buffer
 function M.setup_buffer()
+  if not utils.is_treesitter_active() then
+    return
+  end
+
   -- Save the original commentstring so that it can be restored later if there
   -- is no match
   api.nvim_buf_set_var(0, 'ts_original_commentstring', api.nvim_buf_get_option(0, 'commentstring'))

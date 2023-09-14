@@ -20,7 +20,7 @@ plugin.
 
 **Requirements:**
 
-- [Neovim version 0.5](https://github.com/neovim/neovim/releases/tag/v0.5.0)
+- [Neovim version 0.8](https://github.com/neovim/neovim/releases/tag/v0.8.0)
 - [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter)
 
 **Installation:**
@@ -41,7 +41,7 @@ require('lazy').setup {
 
 **Setup:**
 
-Enable the module from `nvim-treesitter` setup
+**For `nvim-treesitter` < 1.0**: Enable the module from `nvim-treesitter` setup
 
 ```lua
 require('nvim-treesitter.configs').setup {
@@ -57,6 +57,12 @@ require('nvim-treesitter.configs').setup {
     enable = true,
   },
 }
+```
+
+**For `nvim-treesitter` >= 1.0**: Call the `setup` function of this plugin:
+
+```lua
+require('ts_context_commentstring').setup {}
 ```
 
 > **Note**

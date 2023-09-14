@@ -1,8 +1,6 @@
 local api = vim.api
 local fn = vim.fn
 
-local parsers = require 'nvim-treesitter.parsers'
-
 ---Coordinates for a location. Both the line and the column are 0-indexed (e.g.,
 ---line nr 10 is line 9, the first column is 0).
 ---@alias ts_context_commentstring.Location number[] 2-tuple of (line, column)
@@ -42,7 +40,7 @@ end
 ---This function is copied from Neovim core.
 ---
 ---@param tree table
----@param range array
+---@param range table
 local function tree_contains(tree, range)
   local start_row, start_col, end_row, end_col = tree:root():range()
   local start_fits = start_row < range[1] or (start_row == range[1] and start_col <= range[2])
@@ -99,6 +97,31 @@ function M.get_visual_end_location()
   }
 end
 
+---@return boolean
+function M.is_treesitter_active()
+  if vim.treesitter.get_parser then
+    -- nvim-treesitter >= 1.0
+
+    -- get_parser will throw an error if Treesitter is not set up for the buffer
+    local ok, _ = pcall(vim.treesitter.get_parser, 0)
+
+    return ok
+  end
+
+  local parsers = require 'nvim-treesitter.parsers'
+  return parsers.has_parser()
+end
+
+local function get_parser()
+  if vim.treesitter.get_parser then
+    -- nvim-treesitter >= 1.0
+    return vim.treesitter.get_parser(0)
+  end
+
+  local parsers = require 'nvim-treesitter.parsers'
+  return parsers.get_parser()
+end
+
 ---Get the node that is on the given location (default first non-whitespace
 ---character of the cursor line). This also handles injected languages via
 ---language tree.
@@ -120,7 +143,7 @@ end
 ---@return table node, table language_tree Node and language tree for the
 ---  location
 function M.get_node_at_cursor_start_of_line(only_languages, location)
-  if not parsers.has_parser() then
+  if not M.is_treesitter_active() then
     return
   end
 
@@ -133,7 +156,7 @@ function M.get_node_at_cursor_start_of_line(only_languages, location)
   }
 
   -- Get the language tree with nodes inside the given range
-  local root = parsers.get_parser()
+  local root = get_parser()
   local language_tree = language_for_range(root, range, only_languages)
 
   -- Get the sub-tree of the language tree that contains the given range.

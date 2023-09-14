@@ -29,10 +29,10 @@ local M = {}
 ---@alias ts_context_commentstring.LanguagesConfig table<string, ts_context_commentstring.LanguageConfig>
 
 ---@class ts_context_commentstring.CommentaryConfig
----@field Commentary string | nil
----@field CommentaryLine string | nil
----@field ChangeCommentary string | nil
----@field CommentaryUndo string | nil
+---@field Commentary string | false | nil
+---@field CommentaryLine string | false | nil
+---@field ChangeCommentary string | false | nil
+---@field CommentaryUndo string | false | nil
 
 ---@class ts_context_commentstring.Config
 ---@field enable_autocmd boolean

@@ -47,6 +47,27 @@ should still work.
 3. Commentstring configuration *ts-context-commentstring-commentstring-configuration*
 
 
+This plugin can be configured in two ways. With `nvim-treesitter` < 1.0, the 
+Treesitter module configuration can be used:
+>lua
+  require('nvim-treesitter.configs').setup {
+    context_commentstring = {
+      enable = true,
+      -- ... configuration here
+    },
+  }
+<
+
+With `nvim-treesitter` >= 1.0, use the `setup` function of this plugin:
+>lua
+  require('ts_context_commentstring').setup {
+    -- ... configuration here
+  }
+<
+
+The following examples are for `nvim-treesitter` < 1.0, but they can easily be 
+adapted for `nvim-treesitter` >= 1.0.
+
 Support for more languages can be added quite easily by passing a `config` table
 when configuring the plugin:
 >lua
@@ -56,6 +77,15 @@ when configuring the plugin:
       config = {
         css = '// %s',
       },
+    },
+  }
+<
+
+Or with the `setup` function if using `nvim-treesitter` >= 1.0:
+>lua
+  require('ts_context_commentstring').setup {
+    config = {
+      css = '// %s',
     },
   }
 <
