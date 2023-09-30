@@ -20,7 +20,7 @@ plugin.
 
 **Requirements:**
 
-- [Neovim version 0.8](https://github.com/neovim/neovim/releases/tag/v0.8.0)
+- [Neovim version 0.9](https://github.com/neovim/neovim/releases/tag/v0.9.0)
 - [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter)
 
 **Installation:**
