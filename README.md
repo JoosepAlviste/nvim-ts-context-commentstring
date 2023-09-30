@@ -68,7 +68,7 @@ require('ts_context_commentstring').setup {}
 > **Note**
 >
 > There is a minimal configuration file available at 
-> [`utils/minimal_init.lua`](utils/minimal_init.lua) for reference.
+> [`utils/minimal_init.lua`](https://github.com/JoosepAlviste/nvim-ts-context-commentstring/blob/main/utils/minimal_init.lua) for reference.
 
 > **Note**
 >
