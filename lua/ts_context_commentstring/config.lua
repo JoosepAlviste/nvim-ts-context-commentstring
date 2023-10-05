@@ -77,6 +77,7 @@ M.config = {
     twig = '{# %s #}',
     python = { __default = '# %s', __multiline = '""" %s """' },
     nix = { __default = '# %s', __multiline = '/* %s */' },
+    rescript = { __default = '// %s', __multiline = '/* %s */' },
 
     -- Languages that can have multiple types of comments
     tsx = {
@@ -94,7 +95,6 @@ M.config = {
 }
 
 M.config.config.javascript = M.config.config.tsx
-M.config.config.rescript = M.config.config.tsx
 
 ---@param config? ts_context_commentstring.Config
 function M.update(config)
