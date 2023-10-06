@@ -37,7 +37,7 @@ local M = {}
 ---@class ts_context_commentstring.Config
 ---@field enable_autocmd boolean
 ---@field custom_calculation? fun(node: TSNode, language_tree: LanguageTree): string
----@field config ts_context_commentstring.LanguagesConfig
+---@field languages ts_context_commentstring.LanguagesConfig
 ---@field commentary_integration ts_context_commentstring.CommentaryConfig
 
 ---@type ts_context_commentstring.Config
@@ -56,28 +56,30 @@ M.config = {
     CommentaryUndo = 'gcu',
   },
 
-  -- TODO: We should probably rename this as having a "config" key inside
-  -- "config" is probably confusing. Maybe "languages"?
-  config = {
+  languages = {
     -- Languages that have a single comment style
-    typescript = { __default = '// %s', __multiline = '/* %s */' },
-    css = '/* %s */',
-    scss = { __default = '// %s', __multiline = '/* %s */' },
-    php = { __default = '// %s', __multiline = '/* %s */' },
-    html = '<!-- %s -->',
-    svelte = '<!-- %s -->',
-    vue = '<!-- %s -->',
     astro = '<!-- %s -->',
-    handlebars = '{{! %s }}',
+    c = { __default = '// %s', __multiline = '/* %s */' },
+    css = '/* %s */',
     glimmer = '{{! %s }}',
     graphql = '# %s',
+    handlebars = '{{! %s }}',
+    html = '<!-- %s -->',
     lua = { __default = '-- %s', __multiline = '--[[ %s ]]' },
-    vim = '" %s',
-    sql = '-- %s',
-    twig = '{# %s #}',
-    python = { __default = '# %s', __multiline = '""" %s """' },
     nix = { __default = '# %s', __multiline = '/* %s */' },
+    php = { __default = '// %s', __multiline = '/* %s */' },
+    python = { __default = '# %s', __multiline = '""" %s """' },
     rescript = { __default = '// %s', __multiline = '/* %s */' },
+    scss = { __default = '// %s', __multiline = '/* %s */' },
+    sh = '# %s',
+    solidity = { __default = '// %s', __multiline = '/* %s */' },
+    sql = '-- %s',
+    svelte = '<!-- %s -->',
+    twig = '{# %s #}',
+    typescript = { __default = '// %s', __multiline = '/* %s */' },
+    vim = '" %s',
+    vue = '<!-- %s -->',
+    zsh = '# %s',
 
     -- Languages that can have multiple types of comments
     tsx = {
@@ -94,7 +96,7 @@ M.config = {
   },
 }
 
-M.config.config.javascript = M.config.config.tsx
+M.config.languages.javascript = M.config.languages.tsx
 
 ---@param config? ts_context_commentstring.Config
 function M.update(config)
@@ -113,7 +115,7 @@ end
 
 ---@return ts_context_commentstring.LanguagesConfig
 function M.get_languages_config()
-  return M.config.config
+  return M.config.languages
 end
 
 return M
