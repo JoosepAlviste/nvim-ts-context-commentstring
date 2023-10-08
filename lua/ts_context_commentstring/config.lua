@@ -38,6 +38,7 @@ local M = {}
 ---@field enable_autocmd boolean
 ---@field custom_calculation? fun(node: TSNode, language_tree: LanguageTree): string
 ---@field languages ts_context_commentstring.LanguagesConfig
+---@field config ts_context_commentstring.LanguagesConfig
 ---@field commentary_integration ts_context_commentstring.CommentaryConfig
 
 ---@type ts_context_commentstring.Config
@@ -94,6 +95,9 @@ M.config = {
       spread_element = { __default = '// %s', __multiline = '/* %s */' },
     },
   },
+
+  ---@deprecated
+  config = {},
 }
 
 M.config.languages.javascript = M.config.languages.tsx
@@ -115,7 +119,7 @@ end
 
 ---@return ts_context_commentstring.LanguagesConfig
 function M.get_languages_config()
-  return M.config.languages
+  return vim.tbl_extend('keep', M.config.languages, M.config.config)
 end
 
 return M
