@@ -96,7 +96,7 @@ M.config = {
     },
   },
 
-  ---@deprecated
+  ---@deprecated Use the languages configuration instead!
   config = {},
 }
 
@@ -119,7 +119,7 @@ end
 
 ---@return ts_context_commentstring.LanguagesConfig
 function M.get_languages_config()
-  return vim.tbl_extend('keep', M.config.languages, M.config.config)
+  return vim.tbl_deep_extend('force', M.config.languages, M.config.config)
 end
 
 return M
