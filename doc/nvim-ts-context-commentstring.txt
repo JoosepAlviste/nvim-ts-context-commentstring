@@ -16,6 +16,7 @@ Currently, the following languages are supported when they are injected with
 language tree (see `lua/ts_context_commentstring/internal.lua`):
 
 - `astro`
+- `c`
 - `css`
 - `glimmer`
 - `graphql`
@@ -28,13 +29,16 @@ language tree (see `lua/ts_context_commentstring/internal.lua`):
 - `python`
 - `rescript`
 - `scss`
+- `shell`
 - `sql`
+- `solidity`
 - `svelte`
 - `tsx`
 - `twig`
 - `typescript`
 - `vim`
 - `vue`
+- `zsh`
 
 This means that in any filetype, if the given languages are injected, this 
 plugin should detect them and correctly set the 'commentstring'. For example, 
@@ -68,13 +72,13 @@ With `nvim-treesitter` >= 1.0, use the `setup` function of this plugin:
 The following examples are for `nvim-treesitter` < 1.0, but they can easily be 
 adapted for `nvim-treesitter` >= 1.0.
 
-Support for more languages can be added quite easily by passing a `config` table
+Support for more languages can be added quite easily by passing a `languages` (formerly the now deprecated `config`) table
 when configuring the plugin:
 >lua
   require('nvim-treesitter.configs').setup {
     context_commentstring = {
       enable = true,
-      config = {
+      languages = {
         css = '// %s',
       },
     },
@@ -84,7 +88,7 @@ when configuring the plugin:
 Or with the `setup` function if using `nvim-treesitter` >= 1.0:
 >lua
   require('ts_context_commentstring').setup {
-    config = {
+    languages = {
       css = '// %s',
     },
   }
@@ -103,7 +107,7 @@ like:
   require('nvim-treesitter.configs').setup {
     context_commentstring = {
       enable = true,
-      config = {
+      languages = {
         javascript = {
           __default = '// %s',
           jsx_element = '{/* %s */}',
@@ -131,7 +135,7 @@ multi-line comment styles (useful when integrating with a commenting plugin):
   require('nvim-treesitter.configs').setup {
     context_commentstring = {
       enable = true,
-      config = {
+      languages = {
         typescript = { __default = '// %s', __multiline = '/* %s */' },
       },
     },
