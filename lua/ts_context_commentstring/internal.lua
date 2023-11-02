@@ -5,15 +5,16 @@ local config = require 'ts_context_commentstring.config'
 
 local M = {}
 
----Initialize the plugin in the current buffer
-function M.setup_buffer()
-  if not utils.is_treesitter_active() then
+---Initialize the plugin in the buffer
+---@param bufnr number
+function M.setup_buffer(bufnr)
+  if not utils.is_treesitter_active(bufnr) then
     return
   end
 
   -- Save the original commentstring so that it can be restored later if there
   -- is no match
-  api.nvim_buf_set_var(0, 'ts_original_commentstring', api.nvim_buf_get_option(0, 'commentstring'))
+  api.nvim_buf_set_var(bufnr, 'ts_original_commentstring', api.nvim_buf_get_option(bufnr, 'commentstring'))
 
   local enable_autocmd = config.is_autocmd_enabled()
 
@@ -25,7 +26,7 @@ function M.setup_buffer()
   if enable_autocmd then
     local group = api.nvim_create_augroup('context_commentstring_ft', { clear = true })
     api.nvim_create_autocmd('CursorHold', {
-      buffer = 0,
+      buffer = bufnr,
       group = group,
       desc = 'Change the commentstring on cursor hold using Treesitter',
       callback = function()
@@ -129,13 +130,18 @@ function M.check_node(node, language_config, commentstring_key)
   return M.check_node(node:parent(), language_config, commentstring_key)
 end
 
----Attach the module to the current buffer
+---@deprecated
 function M.attach()
+  vim.deprecate(
+    'context_commentstring nvim-treesitter module',
+    "use require('ts_context_commentstring').setup {} and set vim.g.skip_ts_context_commentstring_module = true to speed up loading",
+    'in the future',
+    'ts_context_commentstring'
+  )
   config.update(require('nvim-treesitter.configs').get_module 'context_commentstring')
-
-  return M.setup_buffer()
 end
 
+---@deprecated
 function M.detach() end
 
 _G.context_commentstring = {}

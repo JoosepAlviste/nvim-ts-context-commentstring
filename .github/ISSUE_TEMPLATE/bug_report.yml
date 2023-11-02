@@ -8,12 +8,10 @@ body:
       label: "Minimal reproducible full config"
       description: |
         Please provide a working config based on [this](https://github.com/JoosepAlviste/nvim-ts-context-commentstring/blob/main/utils/minimal_init.lua).
-        **Tip**: You can use `:h $NVIM_APPNAME` to easily set up a second config.
 
-        1. Create a new directory at ~/.config/nvim-test
-        2. Copy the minimal init.lua to that folder
-        3. Run nvim with `NVIM_APPNAME=nvim-test nvim`
-        4. Make the necessary changes to the config file to reproduce your issue
+        1. Clone this plugin somewhere. E.g. `git clone https://github.com/JoosepAlviste/nvim-ts-context-commentstring ~/nvim-repro/nvim-ts-context-commentstring`
+        2. Run `utils/run_minimal.sh` from the cloned repository
+        3. Make the necessary changes to the config file to reproduce your issue
       value: |
         ```lua
         -- Your configuration here

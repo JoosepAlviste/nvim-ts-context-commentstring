@@ -50,42 +50,20 @@ should still work.
 ==============================================================================
 3. Commentstring configuration *ts-context-commentstring-commentstring-configuration*
 
+This plugin initializes using default **plugin** system.
 
-This plugin can be configured in two ways. With `nvim-treesitter` < 1.0, the 
-Treesitter module configuration can be used:
->lua
-  require('nvim-treesitter.configs').setup {
-    context_commentstring = {
-      enable = true,
-      -- ... configuration here
-    },
-  }
-<
+If you need to disable auto-initialization, set
+`g:loaded_ts_context_commentstring` to non-zero value.
 
-With `nvim-treesitter` >= 1.0, use the `setup` function of this plugin:
+Custom configuration can be supplied using `setup` function:
 >lua
   require('ts_context_commentstring').setup {
     -- ... configuration here
   }
 <
 
-The following examples are for `nvim-treesitter` < 1.0, but they can easily be 
-adapted for `nvim-treesitter` >= 1.0.
-
 Support for more languages can be added quite easily by passing a `languages` (formerly the now deprecated `config`) table
 when configuring the plugin:
->lua
-  require('nvim-treesitter.configs').setup {
-    context_commentstring = {
-      enable = true,
-      languages = {
-        css = '// %s',
-      },
-    },
-  }
-<
-
-Or with the `setup` function if using `nvim-treesitter` >= 1.0:
 >lua
   require('ts_context_commentstring').setup {
     languages = {
@@ -104,17 +82,14 @@ Treesitter nodes. Each node can have its own unique commenting style. For
 example, here's how the default configuration for `javascript` would look 
 like:
 >lua
-  require('nvim-treesitter.configs').setup {
-    context_commentstring = {
-      enable = true,
-      languages = {
-        javascript = {
-          __default = '// %s',
-          jsx_element = '{/* %s */}',
-          jsx_fragment = '{/* %s */}',
-          jsx_attribute = '// %s',
-          comment = '// %s',
-        },
+  require('ts_context_commentstring').setup {
+    languages = {
+      javascript = {
+        __default = '// %s',
+        jsx_element = '{/* %s */}',
+        jsx_fragment = '{/* %s */}',
+        jsx_attribute = '// %s',
+        comment = '// %s',
       },
     },
   }
@@ -132,12 +107,9 @@ Additionally, it is possible to have each 'commentstring' configuration be a
 table with custom keys. This can be used to configure separate single and 
 multi-line comment styles (useful when integrating with a commenting plugin):
 >lua
-  require('nvim-treesitter.configs').setup {
-    context_commentstring = {
-      enable = true,
-      languages = {
-        typescript = { __default = '// %s', __multiline = '/* %s */' },
-      },
+  require('ts_context_commentstring').setup {
+    languages = {
+      typescript = { __default = '// %s', __multiline = '/* %s */' },
     },
   }
 <
@@ -162,13 +134,10 @@ integrations. There are some useful helper functions exported from
 If you want to calculate your own 'commentstring' you are able to do so with
 the `custom_calculation` option:
 >lua
-  require('nvim-treesitter.configs').setup {
-    context_commentstring = {
-      enable = true,
-      custom_calculation = function(node, language_tree)
-        -- ...
-      end,
-    },
+  require('ts_context_commentstring').setup {
+    custom_calculation = function(node, language_tree)
+      -- ...
+    end,
   }
 <
 

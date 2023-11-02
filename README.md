@@ -20,8 +20,8 @@ plugin.
 
 **Requirements:**
 
-- [Neovim version 0.9](https://github.com/neovim/neovim/releases/tag/v0.9.0)
-- [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter)
+- [Neovim version 0.9.4](https://github.com/neovim/neovim/releases/tag/v0.9.4)
+- Tree-sitter parsers (e.g. installed with [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter))
 
 **Installation:**
 
@@ -30,39 +30,21 @@ with [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
 require('lazy').setup {
-  {
-    'nvim-treesitter/nvim-treesitter',
-    dependencies = {
-      'JoosepAlviste/nvim-ts-context-commentstring',
-    },
-  },
+  'JoosepAlviste/nvim-ts-context-commentstring',
 }
 ```
 
 **Setup:**
 
-**For `nvim-treesitter` < 1.0**: Enable the module from `nvim-treesitter` setup
+Defaults work out of the box.  
+Set `vim.g.skip_ts_context_commentstring_module = true` somewhere in your configuration to skip backwards compatibility routines and speed up loading.
+
+If you want to change the configuration, call the `setup` function of this plugin, e.g.:
 
 ```lua
-require('nvim-treesitter.configs').setup {
-  -- Install the parsers for the languages you want to comment in
-  -- Here are the supported languages:
-  ensure_installed = {
-    'astro', 'css', 'glimmer', 'graphql', 'handlebars', 'html', 'javascript',
-    'lua', 'nix', 'php', 'python', 'rescript', 'scss', 'svelte', 'tsx', 'twig',
-    'typescript', 'vim', 'vue',
-  },
-
-  context_commentstring = {
-    enable = true,
-  },
+require('ts_context_commentstring').setup {
+  enable_autocmd = false,
 }
-```
-
-**For `nvim-treesitter` >= 1.0**: Call the `setup` function of this plugin:
-
-```lua
-require('ts_context_commentstring').setup {}
 ```
 
 > **Note**

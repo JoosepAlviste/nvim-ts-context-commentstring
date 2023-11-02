@@ -21,10 +21,10 @@ local M = {}
 ---
 ---You can get the treesitter language for the current file by running this
 ---command:
----`:lua print(require'nvim-treesitter.parsers'.get_buf_lang(0))`
+---`:=vim.treesitter.get_parser():lang()`
 ---
 ---Or the injected language for a specific location:
----`:lua print(require'nvim-treesitter.parsers'.get_parser():language_for_range({ line, col, line, col }):lang())`
+---`:=vim.treesitter.get_parser():language_for_range({ line, col, line, col }):lang())`
 ---
 ---@alias ts_context_commentstring.LanguagesConfig table<string, ts_context_commentstring.LanguageConfig>
 
