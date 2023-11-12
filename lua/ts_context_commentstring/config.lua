@@ -73,6 +73,7 @@ M.config = {
     rescript = { __default = '// %s', __multiline = '/* %s */' },
     scss = { __default = '// %s', __multiline = '/* %s */' },
     sh = '# %s',
+    bash = '# %s',
     solidity = { __default = '// %s', __multiline = '/* %s */' },
     sql = '-- %s',
     svelte = '<!-- %s -->',
