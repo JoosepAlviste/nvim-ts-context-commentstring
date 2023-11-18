@@ -16,6 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 vim.opt.updatetime = 100
 
 require('lazy').setup {
+  'JoosepAlviste/nvim-ts-context-commentstring',
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
@@ -25,14 +26,8 @@ require('lazy').setup {
         highlight = {
           enable = true,
         },
-        context_commentstring = {
-          enable = true,
-        },
       }
     end,
-    dependencies = {
-      'JoosepAlviste/nvim-ts-context-commentstring',
-    },
   },
   {
     'numToStr/Comment.nvim',

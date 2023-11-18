@@ -7,52 +7,6 @@ local fn = vim.fn
 
 local M = {}
 
----Get the language tree from the given parser that is in the given range. Only
----accept the given languages. Ignores all language trees with a language not
----included in `only_languages` parameter.
----
----This function is pretty much copied from Neovim core
----(`LanguageTree:language_for_range`), but includes filtering of the injected
----languages.
----
----@param parser table
----@param range number[]
----@param only_languages string[] Languages to keep, skip others
----
----@return table
-local function language_for_range(parser, range, only_languages)
-  for _, child in pairs(parser._children) do
-    if child:contains(range) then
-      local result = language_for_range(child, range, only_languages)
-
-      if not vim.tbl_contains(only_languages, result:lang()) then
-        return parser
-      end
-
-      return result
-    end
-  end
-
-  return parser
-end
-
----Check if the given language tree contains the given range.
----This function is copied from Neovim core.
----
----@param tree table
----@param range table
-local function tree_contains(tree, range)
-  local start_row, start_col, end_row, end_col = tree:root():range()
-  local start_fits = start_row < range[1] or (start_row == range[1] and start_col <= range[2])
-  local end_fits = end_row > range[3] or (end_row == range[3] and end_col >= range[4])
-
-  if start_fits and end_fits then
-    return true
-  end
-
-  return false
-end
-
 ---Get the location of the cursor to be used to get the treesitter node
 ---function.
 ---
@@ -98,28 +52,14 @@ function M.get_visual_end_location()
 end
 
 ---@return boolean
-function M.is_treesitter_active()
-  if vim.treesitter.get_parser then
-    -- nvim-treesitter >= 1.0
+---@param bufnr? number
+function M.is_treesitter_active(bufnr)
+  bufnr = bufnr or 0
 
-    -- get_parser will throw an error if Treesitter is not set up for the buffer
-    local ok, _ = pcall(vim.treesitter.get_parser, 0)
+  -- get_parser will throw an error if Treesitter is not set up for the buffer
+  local ok, _ = pcall(vim.treesitter.get_parser, bufnr)
 
-    return ok
-  end
-
-  local parsers = require 'nvim-treesitter.parsers'
-  return parsers.has_parser()
-end
-
-local function get_parser()
-  if vim.treesitter.get_parser then
-    -- nvim-treesitter >= 1.0
-    return vim.treesitter.get_parser(0)
-  end
-
-  local parsers = require 'nvim-treesitter.parsers'
-  return parsers.get_parser()
+  return ok
 end
 
 ---Get the node that is on the given location (default first non-whitespace
@@ -140,7 +80,7 @@ end
 ---  where to start traversing the tree. Defaults to cursor start of line.
 ---  This usually makes the most sense when commenting the whole line.
 ---
----@return table node, table language_tree Node and language tree for the
+---@return table|nil node, table|nil language_tree Node and language tree for the
 ---  location
 function M.get_node_at_cursor_start_of_line(only_languages, location)
   if not M.is_treesitter_active() then
@@ -155,26 +95,16 @@ function M.get_node_at_cursor_start_of_line(only_languages, location)
     location[2],
   }
 
-  -- Get the language tree with nodes inside the given range
-  local root = get_parser()
-  local language_tree = language_for_range(root, range, only_languages)
+  -- default to top level language tree
+  local language_tree = vim.treesitter.get_parser()
+  -- Get the smallest supported language's tree with nodes inside the given range
+  language_tree:for_each_tree(function(_, ltree)
+    if ltree:contains(range) and vim.tbl_contains(only_languages, ltree:lang()) then
+      language_tree = ltree
+    end
+  end)
 
-  -- Get the sub-tree of the language tree that contains the given range.
-  -- If there are multiple trees in the buffer for the same injected language,
-  -- then we need to make sure that we are operating on the correct tree.
-  local tree = vim.tbl_filter(function(tree)
-    return tree_contains(tree, range)
-  end, language_tree:trees())[1]
-
-  -- avoid crash on empty files
-  if not tree then
-    return nil, language_tree
-  end
-
-  -- Get the actual node on the location
-  local injected_root = tree:root()
-  local node = injected_root:named_descendant_for_range(unpack(range))
-
+  local node = language_tree:named_node_for_range(range)
   return node, language_tree
 end
 
