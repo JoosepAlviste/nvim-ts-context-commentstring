@@ -63,7 +63,7 @@ M.config = {
     c = { __default = '// %s', __multiline = '/* %s */' },
     css = '/* %s */',
     glimmer = '{{! %s }}',
-    go = '// %s',
+    go = { __default = '// %s', __multiline = '/* %s */' },
     graphql = '# %s',
     haskell = '-- %s',
     handlebars = '{{! %s }}',
