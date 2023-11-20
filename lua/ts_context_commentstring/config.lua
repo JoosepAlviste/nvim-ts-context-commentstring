@@ -59,29 +59,11 @@ M.config = {
 
   languages = {
     -- Languages that have a single comment style
-    astro = '<!-- %s -->',
-    c = { __default = '// %s', __multiline = '/* %s */' },
-    css = '/* %s */',
-    glimmer = '{{! %s }}',
-    graphql = '# %s',
-    handlebars = '{{! %s }}',
-    html = '<!-- %s -->',
-    lua = { __default = '-- %s', __multiline = '--[[ %s ]]' },
-    nix = { __default = '# %s', __multiline = '/* %s */' },
-    php = { __default = '// %s', __multiline = '/* %s */' },
-    python = { __default = '# %s', __multiline = '""" %s """' },
     rescript = { __default = '// %s', __multiline = '/* %s */' },
-    scss = { __default = '// %s', __multiline = '/* %s */' },
-    sh = '# %s',
-    bash = '# %s',
     solidity = { __default = '// %s', __multiline = '/* %s */' },
-    sql = '-- %s',
     svelte = '<!-- %s -->',
     twig = '{# %s #}',
-    typescript = { __default = '// %s', __multiline = '/* %s */' },
-    vim = '" %s',
     vue = '<!-- %s -->',
-    zsh = '# %s',
 
     -- Languages that can have multiple types of comments
     tsx = {
