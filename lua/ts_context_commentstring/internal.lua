@@ -51,10 +51,8 @@ end
 function M.calculate_commentstring(args)
   args = args or {}
   local key = args.key or '__default'
-  local location = args.location or nil
 
-  local node, language_tree =
-    utils.get_node_at_cursor_start_of_line(vim.tbl_keys(config.get_languages_config()), location)
+  local node, language_tree = utils.get_node_at_cursor_start_of_line()
 
   if not node and not language_tree then
     return nil
@@ -74,7 +72,7 @@ function M.calculate_commentstring(args)
   -- Use ts node commentstring if no language is configured
   if not language_config then
     local cs = M.check_ts_node(language_tree)
-    if cs ~= '' then
+    if cs then
       return cs
     end
   end
@@ -83,26 +81,10 @@ function M.calculate_commentstring(args)
 end
 
 function M.check_ts_node(language_tree)
-  local ts_cs = nil
-  local traverse
-
-  traverse = function(lang_tree)
-    local lang = lang_tree:lang()
-    local filetypes = vim.treesitter.language.get_filetypes(lang)
-    for _, ft in ipairs(filetypes) do
-      local cur_cs = vim.filetype.get_option(ft, 'commentstring')
-      if type(cur_cs) == 'string' and cur_cs ~= '' then
-        ts_cs = cur_cs
-      end
-    end
-
-    for _, child_lang_tree in pairs(lang_tree:children()) do
-      traverse(child_lang_tree)
-    end
+  local cs = vim.filetype.get_option(language_tree:lang(), 'commentstring')
+  if type(cs) == 'string' and cs ~= '' then
+    return cs
   end
-  traverse(language_tree)
-
-  return ts_cs
 end
 
 ---Update the `commentstring` setting based on the current location of the
