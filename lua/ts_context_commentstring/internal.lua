@@ -134,7 +134,7 @@ end
 function M.attach()
   vim.deprecate(
     'context_commentstring nvim-treesitter module',
-    "use require('ts_context_commentstring').setup {} and set vim.g.skip_ts_context_commentstring_module = true to speed up loading",
+    "require('ts_context_commentstring').setup {} and set vim.g.skip_ts_context_commentstring_module = true to speed up loading",
     'in the future',
     'ts_context_commentstring'
   )
