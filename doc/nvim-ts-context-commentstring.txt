@@ -55,7 +55,15 @@ This plugin initializes using default **plugin** system.
 If you need to disable auto-initialization, set
 `g:loaded_ts_context_commentstring` to non-zero value.
 
-Custom configuration can be supplied using `setup` function:
+Custom configuration can be supplied by populating
+`vim.g.ts_context_commentstring_config` before plugin is loaded
+>lua
+  vim.g.ts_context_commentstring_config = {
+    -- ... configuration here
+  }
+<
+
+Or using `setup` function:
 >lua
   require('ts_context_commentstring').setup {
     -- ... configuration here
@@ -65,7 +73,7 @@ Custom configuration can be supplied using `setup` function:
 Support for more languages can be added quite easily by passing a `languages` (formerly the now deprecated `config`) table
 when configuring the plugin:
 >lua
-  require('ts_context_commentstring').setup {
+  vim.g.ts_context_commentstring_config = {
     languages = {
       css = '// %s',
     },
@@ -82,7 +90,7 @@ Treesitter nodes. Each node can have its own unique commenting style. For
 example, here's how the default configuration for `javascript` would look 
 like:
 >lua
-  require('ts_context_commentstring').setup {
+  vim.g.ts_context_commentstring_config = {
     languages = {
       javascript = {
         __default = '// %s',
@@ -107,7 +115,7 @@ Additionally, it is possible to have each 'commentstring' configuration be a
 table with custom keys. This can be used to configure separate single and 
 multi-line comment styles (useful when integrating with a commenting plugin):
 >lua
-  require('ts_context_commentstring').setup {
+  vim.g.ts_context_commentstring_config = {
     languages = {
       typescript = { __default = '// %s', __multiline = '/* %s */' },
     },
@@ -134,7 +142,7 @@ integrations. There are some useful helper functions exported from
 If you want to calculate your own 'commentstring' you are able to do so with
 the `custom_calculation` option:
 >lua
-  require('ts_context_commentstring').setup {
+  vim.g.ts_context_commentstring_config = {
     custom_calculation = function(node, language_tree)
       -- ...
     end,

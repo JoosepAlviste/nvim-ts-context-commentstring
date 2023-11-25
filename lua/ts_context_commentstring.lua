@@ -1,9 +1,9 @@
 local M = {}
 
----Set up non-default configuration
----@param config ts_context_commentstring.Config
+---Re-read global configuration or apply explicit override
+---@param config ts_context_commentstring.Config|nil
 function M.setup(config)
-  require('ts_context_commentstring.config').update(config)
+  require('ts_context_commentstring.config').setup(config or vim.g.ts_context_commentstring_config)
 end
 
 ---Calculate the commentstring based on the current location of the cursor.

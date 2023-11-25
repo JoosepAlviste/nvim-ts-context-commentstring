@@ -42,7 +42,7 @@ local M = {}
 ---@field commentary_integration ts_context_commentstring.CommentaryConfig
 
 ---@type ts_context_commentstring.Config
-M.config = {
+local default_config = {
   -- Whether to update the `commentstring` on the `CursorHold` autocmd
   enable_autocmd = true,
 
@@ -102,12 +102,20 @@ M.config = {
   ---@deprecated Use the languages configuration instead!
   config = {},
 }
+default_config.languages.javascript = default_config.languages.tsx
 
-M.config.languages.javascript = M.config.languages.tsx
+local config, configured_languages = {}, {}
 
----@param config? ts_context_commentstring.Config
-function M.update(config)
-  M.config = vim.tbl_deep_extend('force', M.config, config or {})
+---@param overrides? ts_context_commentstring.Config
+function M.setup(overrides)
+  overrides = overrides or {}
+  vim.validate {
+    config = { overrides, 'table' },
+  }
+
+  config = vim.tbl_deep_extend('force', {}, default_config, overrides)
+  config.languages = vim.tbl_deep_extend('force', config.languages, config.config)
+  configured_languages = vim.tbl_keys(config.languages)
 end
 
 ---@return boolean
@@ -116,13 +124,32 @@ function M.is_autocmd_enabled()
     return false
   end
 
-  local enable_autocmd = M.config.enable_autocmd
+  local enable_autocmd = config.enable_autocmd
   return enable_autocmd == nil and true or enable_autocmd
 end
 
----@return ts_context_commentstring.LanguagesConfig
-function M.get_languages_config()
-  return vim.tbl_deep_extend('force', M.config.languages, M.config.config)
+---@return table<string>
+function M.configured_languages()
+  return configured_languages
 end
+
+---@param lang string
+---@return ts_context_commentstring.LanguageConfig | nil
+function M.for_language(lang)
+  return (config.languages or {})[lang]
+end
+
+---@return ts_context_commentstring.CommentaryConfig | table
+function M.commentary_integration()
+  return config.commentary_integration or {}
+end
+
+---@return function | nil
+function M.custom_calculation()
+  return config.custom_calculation
+end
+
+---Load global configuration on file load
+M.setup(vim.g.ts_context_commentstring_config)
 
 return M

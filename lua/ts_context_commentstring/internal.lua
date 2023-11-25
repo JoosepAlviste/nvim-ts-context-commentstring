@@ -20,7 +20,7 @@ function M.setup_buffer(bufnr)
 
   -- If vim-commentary is installed, set up mappings for it
   if vim.g.loaded_commentary == 1 then
-    require('ts_context_commentstring.integrations.vim_commentary').set_up_maps(config.config.commentary_integration)
+    require('ts_context_commentstring.integrations.vim_commentary').set_up_maps(config.commentary_integration())
   end
 
   if enable_autocmd then
@@ -53,14 +53,15 @@ function M.calculate_commentstring(args)
   local key = args.key or '__default'
   local location = args.location or nil
 
-  local node, language_tree =
-    utils.get_node_at_cursor_start_of_line(vim.tbl_keys(config.get_languages_config()), location)
+  local node, language_tree = utils.get_node_at_cursor_start_of_line(config.configured_languages(), location)
 
   if not node and not language_tree then
+    ---@cast node -nil
+    ---@cast language_tree -nil
     return nil
   end
 
-  local custom_calculation = config.config.custom_calculation
+  local custom_calculation = config.custom_calculation()
   if custom_calculation then
     local commentstring = custom_calculation(node, language_tree)
     if commentstring then
@@ -69,7 +70,7 @@ function M.calculate_commentstring(args)
   end
 
   local language = language_tree:lang()
-  local language_config = config.get_languages_config()[language]
+  local language_config = config.for_language(language)
 
   return M.check_node(node, language_config, key)
 end
@@ -100,7 +101,7 @@ end
 ---check its parent node.
 ---
 ---@param node table
----@param language_config ts_context_commentstring.LanguageConfig
+---@param language_config ts_context_commentstring.LanguageConfig|nil
 ---@param commentstring_key string
 ---
 ---@return string | nil
