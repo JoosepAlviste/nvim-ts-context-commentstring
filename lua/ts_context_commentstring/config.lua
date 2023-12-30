@@ -68,6 +68,7 @@ M.config = {
     haskell = '-- %s',
     handlebars = '{{! %s }}',
     html = '<!-- %s -->',
+    htmldjango = { __default = '{# %s #}', __multiline = '{% comment %} %s {% endcomment %}' },
     lua = { __default = '-- %s', __multiline = '--[[ %s ]]' },
     nix = { __default = '# %s', __multiline = '/* %s */' },
     php = { __default = '// %s', __multiline = '/* %s */' },
@@ -97,6 +98,11 @@ M.config = {
       statement_block = { __default = '// %s', __multiline = '/* %s */' },
       spread_element = { __default = '// %s', __multiline = '/* %s */' },
     },
+  },
+
+  not_nested_languages = {
+    -- Languages at wich nesting stops
+    htmldjango = true,
   },
 
   ---@deprecated Use the languages configuration instead!

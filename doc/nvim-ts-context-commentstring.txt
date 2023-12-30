@@ -22,6 +22,7 @@ language tree (see `lua/ts_context_commentstring/internal.lua`):
 - `graphql`
 - `handlebars`
 - `html`
+- `htmldjango`
 - `javascript`
 - `lua`
 - `nix`
@@ -147,6 +148,10 @@ could be used for context like figuring out which language you should use a
 node is. You need to return a 'commentstring' in the `custom_calculation` if you 
 want it to be set.
 
+The `not_nested_languages` table allows you to halt the search for nested
+languages at a specified language. This functionality proves beneficial,
+for instance, in scenarios such as HTML with Django, where you may want
+to include Django comments while excluding HTML content.
 
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:

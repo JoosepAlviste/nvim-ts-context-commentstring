@@ -76,13 +76,18 @@ end
 ---
 ---@param only_languages string[] List of languages to filter for, all
 ---  other languages will be ignored.
+---@param not_nested_languages string[] List of languages which stop nesting
 ---@param location? ts_context_commentstring.Location location Line, column
 ---  where to start traversing the tree. Defaults to cursor start of line.
 ---  This usually makes the most sense when commenting the whole line.
 ---
 ---@return table|nil node, table|nil language_tree Node and language tree for the
 ---  location
-function M.get_node_at_cursor_start_of_line(only_languages, location)
+function M.get_node_at_cursor_start_of_line(
+    only_languages,
+    not_nested_languages,
+    location
+  )
   if not M.is_treesitter_active() then
     return
   end
@@ -99,7 +104,9 @@ function M.get_node_at_cursor_start_of_line(only_languages, location)
   local language_tree = vim.treesitter.get_parser()
   -- Get the smallest supported language's tree with nodes inside the given range
   language_tree:for_each_tree(function(_, ltree)
-    if ltree:contains(range) and vim.tbl_contains(only_languages, ltree:lang()) then
+    if ltree:contains(range)
+        and vim.tbl_contains(only_languages, ltree:lang())
+        and not not_nested_languages[language_tree:lang()] then
       language_tree = ltree
     end
   end)
