@@ -99,6 +99,10 @@ M.config = {
       statement_block = { __default = '// %s', __multiline = '/* %s */' },
       spread_element = { __default = '// %s', __multiline = '/* %s */' },
     },
+    templ = {
+      __default = '// %s',
+      component_declaration = '<!-- %s -->',
+    },
   },
 
   ---@deprecated Use the languages configuration instead!
