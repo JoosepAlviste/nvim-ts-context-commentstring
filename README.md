@@ -39,7 +39,15 @@ require('lazy').setup {
 Defaults work out of the box.  
 Set `vim.g.skip_ts_context_commentstring_module = true` somewhere in your configuration to skip backwards compatibility routines and speed up loading.
 
-If you want to change the configuration, call the `setup` function of this plugin, e.g.:
+If you want to change the configuration, provide custom overrides in `vim.g.ts_context_commentstring_config` before it's loaded
+
+```lua
+vim.g.ts_context_commentstring_config = {
+  enable_autocmd = false,
+}
+```
+
+Or call the `setup` function of this plugin, e.g.:
 
 ```lua
 require('ts_context_commentstring').setup {
