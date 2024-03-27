@@ -122,7 +122,15 @@ function M.check_node(node, language_config, commentstring_key)
   local node_type = node:type()
   local match = language_config[node_type]
 
-  if match then
+  -- print('language_config', vim.inspect(language_config), 'node_type', node_type, 'match', vim.inspect(match))
+  -- For Haskell, the debug print above shows values like:
+  --    language_config "-- %s" node_type haskell match nil
+  --    language_config "-- %s" node_type pat_literal match nil
+  --    language_config "-- %s" node_type char match <function 1>
+  -- I'm clueless why we get a function for 'char" nodes.
+  -- Ignoring seems to work, but actually we should find out what is going on
+  -- and fix that.
+  if match and type(match) ~= 'function' then
     return match[commentstring_key] or match.__default or match
   end
 
