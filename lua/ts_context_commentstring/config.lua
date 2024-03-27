@@ -62,6 +62,7 @@ M.config = {
     astro = '<!-- %s -->',
     c = { __default = '// %s', __multiline = '/* %s */' },
     css = '/* %s */',
+    gleam = '// %s',
     glimmer = '{{! %s }}',
     go = { __default = '// %s', __multiline = '/* %s */' },
     graphql = '# %s',
