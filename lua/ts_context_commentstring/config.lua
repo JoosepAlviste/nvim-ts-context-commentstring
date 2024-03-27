@@ -69,6 +69,7 @@ M.config = {
     handlebars = '{{! %s }}',
     hcl = { __default = '# %s', __multiline = '/* %s */' },
     html = '<!-- %s -->',
+    ini = '; %s',
     lua = { __default = '-- %s', __multiline = '--[[ %s ]]' },
     nix = { __default = '# %s', __multiline = '/* %s */' },
     php = { __default = '// %s', __multiline = '/* %s */' },
