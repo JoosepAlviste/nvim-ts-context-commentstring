@@ -29,6 +29,7 @@ language tree (see `lua/ts_context_commentstring/internal.lua`):
 - `php`
 - `python`
 - `rescript`
+- `roc`
 - `scss`
 - `shell`
 - `sql`

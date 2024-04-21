@@ -89,6 +89,7 @@ M.config = {
     vue = '<!-- %s -->',
     zsh = '# %s',
     kotlin = { __default = '// %s', __multiline = '/* %s */' },
+    roc = '# %s',
 
     -- Languages that can have multiple types of comments
     tsx = {
