@@ -60,7 +60,7 @@ M.config = {
   languages = {
     -- Languages that have a single comment style
     astro = '<!-- %s -->',
-    c = { __default = '// %s', __multiline = '/* %s */' },
+    c = '/* %s */',
     css = '/* %s */',
     gleam = '// %s',
     glimmer = '{{! %s }}',
