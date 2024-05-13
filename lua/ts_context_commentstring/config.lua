@@ -61,6 +61,7 @@ M.config = {
     -- Languages that have a single comment style
     astro = '<!-- %s -->',
     c = { __default = '// %s', __multiline = '/* %s */' },
+    cpp = { __default = '// %s', __multiline = '/* %s */' },
     css = '/* %s */',
     gleam = '// %s',
     glimmer = '{{! %s }}',
