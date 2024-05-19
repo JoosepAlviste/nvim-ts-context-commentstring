@@ -75,6 +75,7 @@ M.config = {
     nix = { __default = '# %s', __multiline = '/* %s */' },
     php = { __default = '// %s', __multiline = '/* %s */' },
     python = { __default = '# %s', __multiline = '""" %s """' },
+    rego = '# %s',
     rescript = { __default = '// %s', __multiline = '/* %s */' },
     scss = { __default = '// %s', __multiline = '/* %s */' },
     sh = '# %s',
