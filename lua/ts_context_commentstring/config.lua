@@ -108,7 +108,7 @@ M.config = {
     },
     templ = {
       __default = '// %s',
-      component_declaration = '<!-- %s -->',
+      component_block = '<!-- %s -->',
     },
   },
 
