@@ -16,6 +16,7 @@ Currently, the following languages are supported when they are injected with
 language tree (see `lua/ts_context_commentstring/internal.lua`):
 
 - `astro`
+- `bash`
 - `c`
 - `cpp`
 - `css`
@@ -24,33 +25,32 @@ language tree (see `lua/ts_context_commentstring/internal.lua`):
 - `glimmer`
 - `go`
 - `graphql`
-- `haskell`
 - `handlebars`
+- `haskell`
 - `hcl`
 - `html`
 - `ini`
 - `javascript`
+- `kotlin`
 - `lua`
 - `nix`
 - `php`
 - `python`
 - `rego`
 - `rescript`
+- `roc`
 - `scss`
 - `shell`
-- `bash`
 - `solidity`
 - `sql`
 - `svelte`
 - `terraform`
+- `tsx`
 - `twig`
 - `typescript`
 - `vim`
 - `vue`
 - `zsh`
-- `kotlin`
-- `roc`
-- `tsx`
 
 This means that in any filetype, if the given languages are injected, this 
 plugin should detect them and correctly set the 'commentstring'. For example, 
