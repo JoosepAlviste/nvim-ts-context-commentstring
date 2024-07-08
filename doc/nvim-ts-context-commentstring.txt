@@ -16,26 +16,35 @@ Currently, the following languages are supported when they are injected with
 language tree (see `lua/ts_context_commentstring/internal.lua`):
 
 - `astro`
+- `bash`
 - `c`
+- `cpp`
 - `css`
 - `cue`
 - `gleam`
 - `glimmer`
+- `go`
 - `graphql`
 - `handlebars`
+- `haskell`
+- `hcl`
 - `html`
+- `ini`
 - `javascript`
+- `kotlin`
 - `lua`
 - `nix`
 - `php`
 - `python`
+- `rego`
 - `rescript`
 - `roc`
 - `scss`
 - `shell`
-- `sql`
 - `solidity`
+- `sql`
 - `svelte`
+- `terraform`
 - `tsx`
 - `twig`
 - `typescript`
