@@ -36,10 +36,13 @@ require('lazy').setup {
 
 **Setup:**
 
-Defaults work out of the box.  
-Set `vim.g.skip_ts_context_commentstring_module = true` somewhere in your configuration to skip backwards compatibility routines and speed up loading.
+For most commenting plugins, this is all you need and the defaults should work 
+out of the box. However, some commenting plugins require a bit more set up. See 
+the [Configuration section](#configuration) for more details about the different 
+plugins.
 
-If you want to change the configuration, call the `setup` function of this plugin, e.g.:
+If you want to change the configuration, call the `setup` function of this 
+plugin, e.g.:
 
 ```lua
 require('ts_context_commentstring').setup {
@@ -65,6 +68,7 @@ when commenting. The available integrations are listed in the
 [wiki](https://github.com/JoosepAlviste/nvim-ts-context-commentstring/wiki/Integrations). 
 The following plugins have an integration available:
 
+- [Native Neovim commenting](https://github.com/JoosepAlviste/nvim-ts-context-commentstring/wiki/Integrations#native-commenting-in-neovim-010)
 - [`b3nj5m1n/kommentary`](https://github.com/JoosepAlviste/nvim-ts-context-commentstring/wiki/Integrations#kommentary)
 - [`terrortylor/nvim-comment`](https://github.com/JoosepAlviste/nvim-ts-context-commentstring/wiki/Integrations#nvim-comment)
 - [`numToStr/Comment.nvim`](https://github.com/JoosepAlviste/nvim-ts-context-commentstring/wiki/Integrations#commentnvim)
