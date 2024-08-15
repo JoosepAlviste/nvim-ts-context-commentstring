@@ -34,12 +34,14 @@ local M = {}
 ---@field ChangeCommentary string | false | nil
 ---@field CommentaryUndo string | false | nil
 
+---@alias ts_context_commentstring.CustomCalculation fun(node: TSNode|nil, language_tree: vim.treesitter.LanguageTree|nil): string
+
 ---@class ts_context_commentstring.Config
----@field enable_autocmd boolean
----@field custom_calculation? fun(node: TSNode, language_tree: LanguageTree): string
----@field languages ts_context_commentstring.LanguagesConfig
----@field config ts_context_commentstring.LanguagesConfig
----@field commentary_integration ts_context_commentstring.CommentaryConfig
+---@field enable_autocmd? boolean
+---@field custom_calculation? ts_context_commentstring.CustomCalculation
+---@field languages? ts_context_commentstring.LanguagesConfig
+---@field config? ts_context_commentstring.LanguagesConfig
+---@field commentary_integration? ts_context_commentstring.CommentaryConfig
 
 ---@type ts_context_commentstring.Config
 M.config = {
@@ -130,12 +132,16 @@ function M.is_autocmd_enabled()
   end
 
   local enable_autocmd = M.config.enable_autocmd
-  return enable_autocmd == nil and true or enable_autocmd
+  if enable_autocmd == nil then
+    return true
+  end
+
+  return enable_autocmd
 end
 
 ---@return ts_context_commentstring.LanguagesConfig
 function M.get_languages_config()
-  return vim.tbl_deep_extend('force', M.config.languages, M.config.config)
+  return vim.tbl_deep_extend('force', M.config.languages or {}, M.config.config or {})
 end
 
 return M

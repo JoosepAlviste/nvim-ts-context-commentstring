@@ -80,8 +80,8 @@ end
 ---  where to start traversing the tree. Defaults to cursor start of line.
 ---  This usually makes the most sense when commenting the whole line.
 ---
----@return table|nil node, table|nil language_tree Node and language tree for the
----  location
+---@return TSNode|nil node, vim.treesitter.LanguageTree|nil language_tree Node
+---   and language tree for the location
 function M.get_node_at_cursor_start_of_line(only_languages, location)
   if not M.is_treesitter_active() then
     return
