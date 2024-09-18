@@ -60,7 +60,7 @@ function M.calculate_commentstring(args)
       slocation
     )
 
-  if not node and not language_tree then
+  if not node or not language_tree then
     return nil
   end
 

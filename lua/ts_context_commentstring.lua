@@ -1,7 +1,7 @@
 local M = {}
 
 ---Set up non-default configuration
----@param config ts_context_commentstring.Config
+---@param config? ts_context_commentstring.Config
 function M.setup(config)
   require('ts_context_commentstring.config').update(config)
 end

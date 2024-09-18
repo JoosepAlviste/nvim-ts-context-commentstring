@@ -34,12 +34,14 @@ local M = {}
 ---@field ChangeCommentary string | false | nil
 ---@field CommentaryUndo string | false | nil
 
+---@alias ts_context_commentstring.CustomCalculation fun(node: TSNode|nil, language_tree: vim.treesitter.LanguageTree|nil): string
+
 ---@class ts_context_commentstring.Config
----@field enable_autocmd boolean
----@field custom_calculation? fun(node: TSNode, language_tree: LanguageTree): string
----@field languages ts_context_commentstring.LanguagesConfig
----@field config ts_context_commentstring.LanguagesConfig
----@field commentary_integration ts_context_commentstring.CommentaryConfig
+---@field enable_autocmd? boolean
+---@field custom_calculation? ts_context_commentstring.CustomCalculation
+---@field languages? ts_context_commentstring.LanguagesConfig
+---@field config? ts_context_commentstring.LanguagesConfig
+---@field commentary_integration? ts_context_commentstring.CommentaryConfig
 
 ---@type ts_context_commentstring.Config
 M.config = {
@@ -60,19 +62,25 @@ M.config = {
   languages = {
     -- Languages that have a single comment style
     astro = '<!-- %s -->',
-    c = { __default = '// %s', __multiline = '/* %s */' },
+    c = '/* %s */',
+    cpp = { __default = '// %s', __multiline = '/* %s */' },
     css = '/* %s */',
+    cue = '// %s',
+    gleam = '// %s',
     glimmer = '{{! %s }}',
     go = { __default = '// %s', __multiline = '/* %s */' },
     graphql = '# %s',
     haskell = '-- %s',
     handlebars = '{{! %s }}',
+    hcl = { __default = '# %s', __multiline = '/* %s */' },
     html = '<!-- %s -->',
     htmldjango = { __default = '{# %s #}', __multiline = '{% comment %} %s {% endcomment %}' },
+    ini = '; %s',
     lua = { __default = '-- %s', __multiline = '--[[ %s ]]' },
     nix = { __default = '# %s', __multiline = '/* %s */' },
     php = { __default = '// %s', __multiline = '/* %s */' },
     python = { __default = '# %s', __multiline = '""" %s """' },
+    rego = '# %s',
     rescript = { __default = '// %s', __multiline = '/* %s */' },
     scss = { __default = '// %s', __multiline = '/* %s */' },
     sh = '# %s',
@@ -80,11 +88,14 @@ M.config = {
     solidity = { __default = '// %s', __multiline = '/* %s */' },
     sql = '-- %s',
     svelte = '<!-- %s -->',
+    terraform = { __default = '# %s', __multiline = '/* %s */' },
     twig = '{# %s #}',
     typescript = { __default = '// %s', __multiline = '/* %s */' },
     vim = '" %s',
     vue = '<!-- %s -->',
     zsh = '# %s',
+    kotlin = { __default = '// %s', __multiline = '/* %s */' },
+    roc = '# %s',
 
     -- Languages that can have multiple types of comments
     tsx = {
@@ -97,6 +108,10 @@ M.config = {
       call_expression = { __default = '// %s', __multiline = '/* %s */' },
       statement_block = { __default = '// %s', __multiline = '/* %s */' },
       spread_element = { __default = '// %s', __multiline = '/* %s */' },
+    },
+    templ = {
+      __default = '// %s',
+      component_block = '<!-- %s -->',
     },
   },
 
@@ -123,12 +138,16 @@ function M.is_autocmd_enabled()
   end
 
   local enable_autocmd = M.config.enable_autocmd
-  return enable_autocmd == nil and true or enable_autocmd
+  if enable_autocmd == nil then
+    return true
+  end
+
+  return enable_autocmd
 end
 
 ---@return ts_context_commentstring.LanguagesConfig
 function M.get_languages_config()
-  return vim.tbl_deep_extend('force', M.config.languages, M.config.config)
+  return vim.tbl_deep_extend('force', M.config.languages or {}, M.config.config or {})
 end
 
 return M
