@@ -116,7 +116,7 @@ M.config = {
   },
 
   not_nested_languages = {
-    -- Languages at wich nesting stops
+    -- Languages at which nesting stops
     htmldjango = true,
   },
 

@@ -57,7 +57,7 @@ function M.calculate_commentstring(args)
     utils.get_node_at_cursor_start_of_line(
       vim.tbl_keys(config.get_languages_config()),
       config.config.not_nested_languages,
-      slocation
+      location
     )
 
   if not node or not language_tree then
