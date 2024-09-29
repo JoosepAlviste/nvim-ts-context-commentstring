@@ -76,7 +76,8 @@ end
 ---
 ---@param only_languages string[] List of languages to filter for, all
 ---  other languages will be ignored.
----@param not_nested_languages string[] List of languages which stop nesting
+---@param not_nested_languages table<string, boolean> List of languages which
+---  stop nesting
 ---@param location? ts_context_commentstring.Location location Line, column
 ---  where to start traversing the tree. Defaults to cursor start of line.
 ---  This usually makes the most sense when commenting the whole line.
