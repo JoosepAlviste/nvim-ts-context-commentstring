@@ -40,6 +40,7 @@ local M = {}
 ---@field enable_autocmd? boolean
 ---@field custom_calculation? ts_context_commentstring.CustomCalculation
 ---@field languages? ts_context_commentstring.LanguagesConfig
+---@field not_nested_languages? table<string, boolean>
 ---@field config? ts_context_commentstring.LanguagesConfig
 ---@field commentary_integration? ts_context_commentstring.CommentaryConfig
 
