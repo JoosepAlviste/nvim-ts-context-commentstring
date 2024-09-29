@@ -40,6 +40,7 @@ local M = {}
 ---@field enable_autocmd? boolean
 ---@field custom_calculation? ts_context_commentstring.CustomCalculation
 ---@field languages? ts_context_commentstring.LanguagesConfig
+---@field not_nested_languages? table<string, boolean>
 ---@field config? ts_context_commentstring.LanguagesConfig
 ---@field commentary_integration? ts_context_commentstring.CommentaryConfig
 
@@ -74,6 +75,7 @@ M.config = {
     handlebars = '{{! %s }}',
     hcl = { __default = '# %s', __multiline = '/* %s */' },
     html = '<!-- %s -->',
+    htmldjango = { __default = '{# %s #}', __multiline = '{% comment %} %s {% endcomment %}' },
     ini = '; %s',
     lua = { __default = '-- %s', __multiline = '--[[ %s ]]' },
     nix = { __default = '# %s', __multiline = '/* %s */' },
@@ -112,6 +114,11 @@ M.config = {
       __default = '// %s',
       component_block = '<!-- %s -->',
     },
+  },
+
+  not_nested_languages = {
+    -- Languages at which nesting stops
+    htmldjango = true,
   },
 
   ---@deprecated Use the languages configuration instead!
