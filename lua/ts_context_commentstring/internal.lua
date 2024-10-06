@@ -116,6 +116,12 @@ function M.check_node(node, language_config, commentstring_key)
     return nil
   end
 
+  -- The configuration is just a simple `commentstring` string, no need to do
+  -- any extra Node traversal
+  if type(language_config) == 'string' then
+    return language_config
+  end
+
   -- There is no node, we have reached the top-most node, use the default
   -- commentstring from language config
   if not node then
