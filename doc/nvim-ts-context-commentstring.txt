@@ -49,6 +49,7 @@ language tree (see `lua/ts_context_commentstring/internal.lua`):
 - `tsx`
 - `twig`
 - `typescript`
+- `typst`
 - `vim`
 - `vue`
 - `zsh`
