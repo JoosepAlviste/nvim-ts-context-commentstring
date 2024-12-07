@@ -92,6 +92,7 @@ M.config = {
     terraform = { __default = '# %s', __multiline = '/* %s */' },
     twig = '{# %s #}',
     typescript = { __default = '// %s', __multiline = '/* %s */' },
+    typst = { __default = '// %s', __multiline = '/* %s */' },
     vim = '" %s',
     vue = '<!-- %s -->',
     zsh = '# %s',
