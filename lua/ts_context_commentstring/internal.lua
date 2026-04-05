@@ -129,8 +129,21 @@ function M.check_node(node, language_config, commentstring_key)
   end
 
   local node_type = node:type()
-  local match = language_config[node_type]
 
+  -- A workaround for an edge case in JSX.
+  -- The first line of JSX should be commented with `// %s` rather than
+  -- `{/* %s */}` but the general logic does not allow us to configure that
+  -- behaviour. This is a bit of an edge case though, and so we have this
+  -- workaround here rather than allowing for more complex configuration.
+  -- For more information, see:
+  -- https://github.com/JoosepAlviste/nvim-ts-context-commentstring/issues/29
+  -- NOTE: We should NOT add any more of these sort of workarounds
+  local is_first_line_of_jsx = node_type == 'jsx_element' and node:parent():type() == 'parenthesized_expression'
+  if is_first_line_of_jsx then
+    return language_config[commentstring_key] or language_config.__default or language_config
+  end
+
+  local match = language_config[node_type]
   if match then
     return match[commentstring_key] or match.__default or match
   end
