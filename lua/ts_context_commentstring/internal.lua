@@ -37,8 +37,8 @@ function M.setup_buffer(bufnr)
 end
 
 ---@class ts_context_commentstring.Args
----@field key string Key to prefer to be returned from ts_context_commentstring.CommentConfigMultiple
----@field location ts_context_commentstring.Location
+---@field key? string Key to prefer to be returned from ts_context_commentstring.CommentConfigMultiple
+---@field location? ts_context_commentstring.Location
 
 ---Calculate the commentstring based on the current location of the cursor.
 ---
